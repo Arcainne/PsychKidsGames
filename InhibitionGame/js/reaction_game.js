@@ -57,8 +57,9 @@ function startPage() {
     play_button.mousedown = play_button.touchstart = function (data) {
         stage.removeChild(instructions_button);
         stage.removeChild(play_button);
+        // renderer.render(stage);
         scoreWriter();
-        renderer.render(stage);
+        // renderer.render(stage);
     };
     renderer.render(stage);
 }
@@ -112,6 +113,34 @@ function instructions2() {
     renderer.render(stage);
 }
 
+// Function to load sprites
+/*function load_sprites() {
+	var red_circle = new Sprite(
+                resources["images/red_circle.png"]
+                .texture);
+        red_circle.buttonMode = true;
+        red_circle.interactive = true;
+        red_circle.width = 150;
+        red_circle.height = 150;
+        var randomStartX = Math.random() * (renderer.width - red_circle.width*2) + red_circle.width;
+        var randomStartY = Math.random() * (renderer.height - red_circle.height*2) + red_circle.height;
+        red_circle.position.set(randomStartX, randomStartY);
+        stage.addChild(red_circle);
+        red_circle.visible = false;
+    var green_circle = new Sprite(
+                resources["images/green_circle.png"]
+                .texture);
+        green_circle.buttonMode = true;
+        green_circle.interactive = true;
+        green_circle.width = 150;
+        green_circle.height = 150;
+        var randomStartX = Math.random() * (renderer.width - green_circle.width*2) + green_circle.width;
+        var randomStartY = Math.random() * (renderer.height - green_circle.height*2) + green_circle.height;
+        green_circle.position.set(randomStartX, randomStartY);
+        stage.addChild(green_circle);
+        green_circle.visible = false;
+    renderer.render(stage);
+}*/
 
 // Recursive function to play game.
 score = 0;
@@ -178,14 +207,6 @@ function scoreWriter() {
     scoreText.position.set(0, 0);
     stage.addChild(scoreText);
     var randomTime = Math.random() * 5000;
+    // load_sprites();
     setTimeout(play, randomTime);
 }
-
-
-
-
-
-
-
-
-
