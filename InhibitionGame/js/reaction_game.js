@@ -4,12 +4,13 @@ var Container = PIXI.Container,
         loader = PIXI.loader,
         resources = PIXI.loader.resources,
         Sprite = PIXI.Sprite;
+// Variables needed later
+var green_circle;
+var red_circle;
 
 // Create a Pixi stage and renderer and add it to the DOM
 var stage = new Container(),
-        renderer = autoDetectRenderer(600, 700);
-//renderer.view.style.position = "absolute";
-//renderer.view.style.display = "block";
+    renderer = autoDetectRenderer(600, 700);
 renderer.autoResize = true;
 renderer.resize(window.innerWidth, window.innerHeight);
 renderer.backgroundColor = 0x99CCFF;
@@ -112,13 +113,9 @@ function instructions2() {
     renderer.render(stage);
 }
 
-
-// Recursive function to play game.
-score = 0;
-function play() {
-    var redOrGreen = Math.random() * 10;
-    if (redOrGreen > 8) {
-        var red_circle = new Sprite(
+// Function to load sprites
+function load_sprites() {
+	red_circle = new Sprite(
                 resources["images/red_circle.png"]
                 .texture);
         red_circle.buttonMode = true;
@@ -129,26 +126,8 @@ function play() {
         var randomStartY = Math.random() * (renderer.height - red_circle.height*2) + red_circle.height;
         red_circle.position.set(randomStartX, randomStartY);
         stage.addChild(red_circle);
-        function goodRed() {
-            stage.removeChild(red_circle);
-            score += 1;
-            scoreText.text = "Score: " + score;
-            renderer.render(stage);
-            var randomTime = Math.random() * 5000;
-            setTimeout(play, randomTime);
-        }
-        timedEvent = setTimeout(goodRed, 3000);
-        red_circle.mousedown = red_circle.touchstart = function (data) {
-            clearTimeout(timedEvent);
-            stage.removeChild(red_circle);
-            score -= 1;
-            scoreText.text = "Score: " + score;
-            renderer.render(stage);
-            var randomTime = Math.random() * 5000;
-            setTimeout(play, randomTime);
-        };
-    } else {
-        var green_circle = new Sprite(
+        red_circle.visible = false;
+    green_circle = new Sprite(
                 resources["images/green_circle.png"]
                 .texture);
         green_circle.buttonMode = true;
@@ -159,8 +138,48 @@ function play() {
         var randomStartY = Math.random() * (renderer.height - green_circle.height*2) + green_circle.height;
         green_circle.position.set(randomStartX, randomStartY);
         stage.addChild(green_circle);
+        green_circle.visible = false;
+    renderer.render(stage);
+    var randomTime = Math.random() * 5000;
+    setTimeout(play, randomTime);
+}
+
+// Recursive function to play game.
+score = 0;
+function play() {
+    var redOrGreen = Math.random() * 10;
+    if (redOrGreen > 8) {
+        var newPosX = Math.random() * (renderer.width - red_circle.width*2) + red_circle.width;
+        var newPosY = Math.random() * (renderer.height - red_circle.height*2) + red_circle.height;
+        red_circle.position.set(newPosX, newPosY);
+        red_circle.visible = true;
+        renderer.render(stage);
+        function goodRed() {
+            red_circle.visible = false;
+            score += 1;
+            scoreText.text = "Score: " + score;
+            renderer.render(stage);
+            var randomTime = Math.random() * 5000;
+            setTimeout(play, randomTime);
+        }
+        timedEvent = setTimeout(goodRed, 3000);
+        red_circle.mousedown = red_circle.touchstart = function (data) {
+            clearTimeout(timedEvent);
+            red_circle.visible = false;
+            score -= 1;
+            scoreText.text = "Score: " + score;
+            renderer.render(stage);
+            var randomTime = Math.random() * 5000;
+            setTimeout(play, randomTime);
+        };
+    } else {
+        var newPosX = Math.random() * (renderer.width - green_circle.width*2) + green_circle.width;
+        var newPosY = Math.random() * (renderer.height - green_circle.height*2) + green_circle.height;
+        green_circle.position.set(newPosX, newPosY);
+        green_circle.visible = true;
+        renderer.render(stage);
         green_circle.mousedown = green_circle.touchstart = function (data) {
-            stage.removeChild(green_circle);
+            green_circle.visible = false
             score += 1;
             scoreText.text = "Score: " + score;
             renderer.render(stage);
@@ -177,10 +196,8 @@ function scoreWriter() {
             {font: "32px sans-serif", fill: "black"});
     scoreText.position.set(0, 0);
     stage.addChild(scoreText);
-    var randomTime = Math.random() * 5000;
-    setTimeout(play, randomTime);
+    load_sprites();
 }
-
 
 
 
