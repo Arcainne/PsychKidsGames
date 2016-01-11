@@ -264,21 +264,21 @@ function play() {
         green_circle.visible = true;
 
         // Allows us to collect the time taken to react.
-        firstTime = Date.parse(new Date());
+        firstTime = new Date();
         
         renderer.render(stage);
 
         // Code to be run when the green cirlce is clicked.
         green_circle.mousedown = green_circle.touchstart = function (data) {
             // Allows us to collect the time taken to react.
-            secondTime = Date.parse(new Date());
+            secondTime = new Date();
             finalTime = secondTime - firstTime;
-            console.log(finalTime);
+            console.log("Reaction time: " + finalTime + "ms");
 
             // Code to update score and call play again.
             green_circle.visible = false
             score += 1;
-            scoreText.text = "Score: " + score;
+            scoreText.text = "Score: " + score + "\nReaction Time: " + finalTime + "ms";
             renderer.render(stage);
             var randomTime = Math.random() * 5000;
             setTimeout(play, randomTime);
