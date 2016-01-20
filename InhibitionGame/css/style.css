@@ -23,6 +23,9 @@ html, body {
 }
 
 h1 {
+    text-align: center;
+    font-size: 36pt;
+    font-weight: bold;
     background-color: #99CCFF;
     padding: 0px;
     margin: 0px;
