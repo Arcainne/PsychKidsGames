@@ -36,22 +36,9 @@ function create() {
     game.stage.backgroundColor = '#99CCFF';
     
     // Create sprites for testing
-    catSprite = game.add.sprite(game.world.width / 4, game.world.height / 3, 'cat');
-    catSprite.anchor.set(0.5, 0.5);
-    catSprite.scale.set(0.5, 0.5);
-    
-    ghostSprite = game.add.sprite(game.world.width - game.world.width / 4, game.world.height / 3, 'ghost');
-    ghostSprite.anchor.set(0.5, 0.5);
-    ghostSprite.scale.set(0.5, 0.5);
-    
     instructionsSprite = game.add.sprite(game.world.centerX, 50, 'instructionsButton');
     instructionsSprite.anchor.set(0.5, 0.5);
     instructionsSprite.scale.set(1.5, 1.5);
-    
-    playButtonSprite = game.add.sprite(game.world.width / 2, game.world.height / 2, 'playButton');
-    playButtonSprite.anchor.set(0.5, 0.5);
-    playButtonSprite.scale.set(0.5, 0.5);
-    playButtonSprite.position.set(playButtonSprite.x, playButtonSprite.y + playButtonSprite.height/2);
     
     style = {
         font: 'bold 30pt Arial',
@@ -68,6 +55,18 @@ function create() {
             style
     );
     instructionsText.anchor.set(0.5, 0);
+    
+    catSprite = game.add.sprite(game.world.width / 4, instructionsText.y + instructionsText.height/2, 'cat');
+    catSprite.anchor.set(0.5, 0.5);
+    catSprite.scale.set(0.5, 0.5);
+    
+    ghostSprite = game.add.sprite(game.world.width - game.world.width / 4, instructionsText.y + instructionsText.height/2, 'ghost');
+    ghostSprite.anchor.set(0.5, 0.5);
+    ghostSprite.scale.set(0.5, 0.5);
+    
+    playButtonSprite = game.add.sprite(game.world.centerX, instructionsText.y + instructionsText.height, 'playButton');
+    playButtonSprite.anchor.set(0.5, 0);
+    playButtonSprite.scale.set(0.5, 0.5);
     
     // Perform sprite tweening
     //startTween();
