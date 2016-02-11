@@ -5,6 +5,8 @@
 
 // Create global empty Instructions state object
 var Instructions = function () {};
+var text;
+var counter = 0;
 
 // Definition of global Instructions state object
 Instructions.prototype = {
@@ -64,6 +66,8 @@ Instructions.prototype = {
         game.add.existing(this.catSprite);
         game.add.existing(this.ghostSprite);
         game.add.existing(this.playButtonSprite);
+        this.playButtonSprite.inputEnabled = true;
+        this.playButtonSprite.events.onInputDown.add(listener, this)
     },
     // Main update function that is called repeatedly
     update: function () {
@@ -74,6 +78,10 @@ Instructions.prototype = {
         this.ghostSprite.y += Math.random() <= 0.5 ? -1 : 1;
     }
 };
+function listener(){
+    game.state.start('Game');
+
+}
 
 /*
  * Old code for smooth, random sprite movement
