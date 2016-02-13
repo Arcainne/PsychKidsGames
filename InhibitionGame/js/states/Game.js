@@ -62,36 +62,89 @@ Game.prototype = {
 
     },
 
-    // play: function () {
-    //     console.log("Hello!")
-    // },
-    // function play() {
-    //     console.log("hello");
-    // },
+  
 
     // Main update function that is called repeatedly
-    // update: function () {
-    //     // Test code to move sprites randomly
-    //     var catOrGhost = Math.random()*10;
-    //     var newPosX, newPosY;
+    update: function () {
+        // Test code to move sprites randomly
+        var catOrGhost = Math.random()*10;
+        var newPosX, newPosY;
 
-    //     if (catOrGhost > 9){
-    //         newPosX = Math.random() * (game.world.width);
-    //         newPosY = Math.random() * (game.world.height);
+        if (catOrGhost > 8){
+            newPosX = Math.random() * (game.world.width);
+            newPosY = Math.random() * (game.world.height);
 
-    //         this.catSprite.position.x = newPosX;
-    //         this.catSprite.position.y = newPosY;
-    //         this.catSprite.visible = true;
+            this.ghostSprite.position.x = newPosX;
+            this.ghostSprite.position.y = newPosY;
+            this.ghostSprite.visible = true;
+
+            function goodGhost(){
+                //this.ghostSprite.visible = false;
+                score += 1;
+                this.scoreText.setText("Score: " + score);
+                var randomTime = Math.random()*5000;
+                setTimeout(update, randomTime);
+            }
+
+            timedEvent = setTimeout(goodGhost, 3000);
+            this.ghostSprite.events.onInputDown.add(decreaseScore, this);
+            var randomTime = Math.random()*5000;
+            game.time.events.add(randomTime, this.update, this);
+
+            // this.ghostSprite.events.onInputDown = this.ghostSprite.touchstart = function (data){
+            //     clearTimeout(timedEvent);
+            //     //this.ghostSprite.visible = false;
+            //     score -= 1;
+            //     this.scoreText.setText("Score: " + score);
+            //     var randomTime = Math.random()*5000;
+            //     setTimeout(update, randomTime);
+            // }
+            
+            
         
-    //     }
-    //     //  this.catSprite.x += Math.random() <= 0.5 ? -1 : 1;
-    //     // this.catSprite.y += Math.random() <= 0.5 ? -1 : 1;
-    //     // this.ghostSprite.x += Math.random() <= 0.5 ? -1 : 1;
-    //     // this.ghostSprite.y += Math.random() <= 0.5 ? -1 : 1;
-    // },
+        }else {
+            newPosX = Math.random() * (game.world.width);
+            newPosY = Math.random() * (game.world.height);
+
+            this.catSprite.position.x = newPosX;
+            this.catSprite.position.y = newPosY;
+            this.catSprite.visible = true;
+            
+            firstTime = new Date();
+
+            // this.catSprite.events.onInputDown = this.catSprite.touchstart = function (data) {
+            //     secondTime = new Date();
+            //     finalTime = secondTime - firstTime;
+            //     console.log("Reaction time: " + finalTime + "ms");
+
+            //     this.catSprite.visible = false;
+            //     score += 1;
+            //     this.scoreText.setText("Score: "+ score);
+            //     var randomTime = Math.random() * 5000;
+            //     setTimeout(update, randomTime);
+            // }
+
+            this.catSprite.events.onInputDown.add(updateScore, this);
+            var randomTime = Math.random() * 5000;
+            game.time.events.add(randomTime, this.update, this);
+        }
+        //  this.catSprite.x += Math.random() <= 0.5 ? -1 : 1;
+        // this.catSprite.y += Math.random() <= 0.5 ? -1 : 1;
+        // this.ghostSprite.x += Math.random() <= 0.5 ? -1 : 1;
+        // this.ghostSprite.y += Math.random() <= 0.5 ? -1 : 1;
+    },
+
     
-    // function play(){
-    //     console.log("hello");
-    // },
+    
+   
+};
+function updateScore() {
+        score += 1;
+        this.scoreText.setText("Score: " +score);
+    }
+
+function decreaseScore(){
+        score -= 1; 
+        this.scoreText.setText("Score: " +score);
 }
 
