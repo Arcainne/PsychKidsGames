@@ -6,11 +6,11 @@
 /*
  * TODO:
  *      + Add ability to swap/cycle sprite groups via a GUI
- *		+ Add ability to change the sprite count dynamically via a GUI
- *		+ Improve/clean up game GUI
- *		+ Test on mobile/tablet browser
+ *	+ Add ability to change the sprite count dynamically via a GUI
+ *	+ Improve/clean up game GUI
+ *	+ Test on mobile/tablet browser
  * ISSUES:
- *      - If tapping sprites rapidly, the timer for sprite might display them rapidly
+ *      - If tapping sprites rapidly, the timer for sprite might display them rapidly (ghost timer function gets called)
  */
 
 // Create global empty Game state object
@@ -121,6 +121,7 @@ Game.prototype = {
 
             // Time ghost to disappear
             randomTime = utilities.randRange(3000, 4000);
+            // ISSUE: - Event timer still gets called even when the ghost is clicked on
             game.time.events.add(randomTime, this.increaseScore, this);
 
         } else {
