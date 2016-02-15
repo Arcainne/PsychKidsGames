@@ -18,7 +18,7 @@ Instructions.prototype = {
             fill: '#0000000',
             align: 'center'
         });
-        this.titleText.setShadow(3, 3, 'rgba(0,0,0,0.5)', 5);
+        this.titleText.setShadow(2, 2, 'rgba(0,0,0,0.5)', 5);
 
         // Create instructions sprite object
         this.instructionsSprite = game.make.sprite(game.world.centerX, this.titleText.y + this.titleText.height * 1.5, 'instructionsButton');
