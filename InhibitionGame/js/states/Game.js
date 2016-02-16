@@ -6,9 +6,9 @@
 /*
  * TODO:
  *      + Add ability to swap/cycle sprite groups via a GUI
- *	+ Add ability to change the sprite count dynamically via a GUI
- *	+ Improve/clean up game GUI
- *	+ Test on mobile/tablet browser
+ *      + Add ability to change the sprite count dynamically via a GUI
+ *      + Improve/clean up game GUI
+ *      + Test on mobile/tablet browser
  * ISSUES:
  *      - If tapping sprites rapidly, the timer for sprite might display them rapidly (ghost timer function gets called)
  */
@@ -20,9 +20,16 @@ var Game = function() {};
 Game.prototype = {
     score: 0,
     timer: 0,
+    i: 0,
+    counter:0,
+
+   
     
     init: function () {
         // Create score text.
+        var goodSprites = ['cat','owl'];
+        var badSprites = ['ghost', 'bear']
+
         this.scoreText = game.make.text(10, 5, "Score: " + this.score, {
             font: 'bold 36pt Arial',
             fill: '#0000000'
@@ -56,15 +63,20 @@ Game.prototype = {
         // Create empty sprite to hold reference to target sprite on screen
         this.targetSprite = game.make.sprite();
 
+     
+
         // Create cat sprite object
         this.catSprite = game.make.sprite(Math.random()*(game.world.width),
-                                Math.random()*(game.world.height), 'cat');
+                                Math.random()*(game.world.height), goodSprites[this.i]);
         this.catSprite.scale.set(0.5, 0.5);
 
         // Create ghost sprite object
         this.ghostSprite = game.make.sprite(Math.random()*(game.world.width),
-                                Math.random()*(game.world.height), 'ghost');
+                                Math.random()*(game.world.height), badSprites[this.i]);
         this.ghostSprite.scale.set(0.5, 0.5);
+
+        this.changeButton = game.make.sprite(10, 650, 'playButton');
+        this.changeButton.scale.set(0.3,0.3);
         
         // Create game timer
         this.timer = game.time.create(false);
@@ -80,16 +92,22 @@ Game.prototype = {
         game.add.existing(this.scoreText);
         game.add.existing(this.instructionsText);
         game.add.existing(this.dataText);
+        game.add.existing(this.changeButton);
         game.add.existing(this.catSprite);
         game.add.existing(this.ghostSprite);
+        
+        this.changeButton.inputEnabled = true;
         this.catSprite.visible = false;
         this.ghostSprite.visible = false;
         this.catSprite.inputEnabled = true;
         this.ghostSprite.inputEnabled = true;
         
+        
         // Input listeners for sprites (only need to be added once if listener functions is constant)
         this.catSprite.events.onInputDown.add(this.increaseScore, this);
         this.ghostSprite.events.onInputDown.add(this.decreaseScore, this);
+        this.changeButton.events.onInputDown.add(this.changeSprites, this);
+        
         
         // Call function to start the sprite updates
         this.spriteUpdate();
@@ -121,7 +139,6 @@ Game.prototype = {
 
             // Time ghost to disappear
             randomTime = utilities.randRange(3000, 4000);
-            // ISSUE: - Event timer still gets called even when the ghost is clicked on
             game.time.events.add(randomTime, this.increaseScore, this);
 
         } else {
@@ -150,6 +167,10 @@ Game.prototype = {
                 "Timer: " + this.timer.seconds.toFixed(2) + "ms\n" +
                 "ReactionSpeed: " + this.finalTime + "ms"
         );
+        this.instructionsText.setText("When the CAT appears, tap it for a point. Try to avoid tapping the GHOST.")
+        
+
+
     },
 
     // TODO: Group these into 1 function that takes in a score argument
@@ -161,6 +182,17 @@ Game.prototype = {
     decreaseScore: function () {
         this.score -= 1; 
         this.finalTime = this.timer.ms;
+        this.spriteUpdate();
+    },
+    changeSprites: function () {
+        goodSpriteArray = ['cat', 'owl'];
+        badSpriteArray = ['ghost', 'bear'];       
+        counter++;
+        if(counter >= goodSpriteArray.length){
+            counter = 0;
+        }
+        this.ghostSprite.loadTexture(goodSpriteArray[counter], 0);
+        this.catSprite.loadTexture(badSpriteArray[counter], 0);
         this.spriteUpdate();
     }
 };

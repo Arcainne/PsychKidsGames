@@ -18,6 +18,13 @@ Main.prototype = {
         game.load.script('splash', 'js/states/Splash.js');
         game.load.image('logo', 'images/LOGO_tiny_1.jpg');
         game.load.image('loading', 'images/loading.png');
+        game.load.image('cat', 'images/cat.png');
+        game.load.image('ghost', 'images/ghost.png');
+        game.load.image('bomb', 'images/bomb.png');
+        game.load.image('bear', 'images/bear.png');
+        game.load.image('playButton', 'images/play_button.png');
+        game.load.image('instructionsButton', 'images/instructions_button.png');
+        game.load.image('owl', 'images/owl.png');
     },
     // Starting function called after 'preload'
     create: function () {

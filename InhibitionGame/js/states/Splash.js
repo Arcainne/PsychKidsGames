@@ -19,8 +19,12 @@ Splash.prototype = {
         // Load images for the game
         game.load.image('cat', 'images/cat.png');
         game.load.image('ghost', 'images/ghost.png');
+        game.load.image('bomb', 'images/bomb.png');
+        game.load.image('bear', 'images/bear.png');
+        game.load.image('owl', 'images/owl.png');
         game.load.image('playButton', 'images/play_button.png');
         game.load.image('instructionsButton', 'images/instructions_button.png');
+
     },
     // Initialization function called before 'preload' to initialize/create class objects
     init: function () {
