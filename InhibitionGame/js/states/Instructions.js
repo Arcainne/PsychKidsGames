@@ -14,7 +14,7 @@ Instructions.prototype = {
     init: function () {
         // Create title text
         this.titleText = game.make.text(game.world.centerX, 40, "ISIS Inhibition Game Prototype", {
-            font: 'bold 36pt Arial',
+            font: 'bold 24pt Arial',
             fill: '#0000000',
             align: 'center'
         });
@@ -30,7 +30,7 @@ Instructions.prototype = {
                 this.instructionsSprite.y + this.instructionsSprite.height / 1.5,
                 "When the CAT appears, tap it for a point. Try to avoid tapping the GHOST.",
                 {
-                    font: 'bold 30pt Arial',
+                    font: 'bold 20pt Arial',
                     fill: 'black',
                     align: 'center',
                     wordWrap: true,

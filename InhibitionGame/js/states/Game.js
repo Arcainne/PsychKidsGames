@@ -31,7 +31,7 @@ Game.prototype = {
         var badSprites = ['ghost', 'bear']
 
         this.scoreText = game.make.text(10, 5, "Score: " + this.score, {
-            font: 'bold 36pt Arial',
+            font: 'bold 24pt Arial',
             fill: '#0000000'
         });
         this.scoreText.setShadow(2, 2, 'rgba(0,0,0,0.5)', 5);
@@ -75,7 +75,7 @@ Game.prototype = {
                                 Math.random()*(game.world.height), badSprites[this.i]);
         this.ghostSprite.scale.set(0.5, 0.5);
 
-        this.changeButton = game.make.sprite(10, 650, 'playButton');
+        this.changeButton = game.make.sprite(10, 250, 'playButton');
         this.changeButton.scale.set(0.3,0.3);
         
         // Create game timer
