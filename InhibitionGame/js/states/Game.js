@@ -9,6 +9,7 @@
  *      + Add ability to change the sprite count dynamically via a GUI
  *      + Improve/clean up game GUI
  *      + Test on mobile/tablet browser
+ *      + Store data in some kind of array
  * ISSUES:
  *      - If tapping sprites rapidly, the timer for sprite might display them rapidly (ghost timer function gets called)
  */
@@ -22,6 +23,11 @@ Game.prototype = {
     timer: 0,
     i: 0,
     counter:0,
+    a:1,
+    reactionArray: [],
+    
+
+    
 
    
     
@@ -75,8 +81,11 @@ Game.prototype = {
                                 Math.random()*(game.world.height), badSprites[this.i]);
         this.ghostSprite.scale.set(0.5, 0.5);
 
-        this.changeButton = game.make.sprite(10, 650, 'playButton');
+        this.changeButton = game.make.sprite(5, game.world.height-90, 'playButton');
         this.changeButton.scale.set(0.3,0.3);
+
+        this.reactionData = game.make.sprite(game.world.width-90, game.world.height-90, 'playButton');
+        this.reactionData.scale.set(0.3,0.3);
         
         // Create game timer
         this.timer = game.time.create(false);
@@ -93,10 +102,13 @@ Game.prototype = {
         game.add.existing(this.instructionsText);
         game.add.existing(this.dataText);
         game.add.existing(this.changeButton);
+        game.add.existing(this.reactionData);
         game.add.existing(this.catSprite);
         game.add.existing(this.ghostSprite);
+
         
         this.changeButton.inputEnabled = true;
+        this.reactionData.inputEnabled = true;
         this.catSprite.visible = false;
         this.ghostSprite.visible = false;
         this.catSprite.inputEnabled = true;
@@ -107,6 +119,7 @@ Game.prototype = {
         this.catSprite.events.onInputDown.add(this.increaseScore, this);
         this.ghostSprite.events.onInputDown.add(this.decreaseScore, this);
         this.changeButton.events.onInputDown.add(this.changeSprites, this);
+        this.reactionData.events.onInputDown.add(this.displayTimes, this);
         
         
         // Call function to start the sprite updates
@@ -167,6 +180,7 @@ Game.prototype = {
                 "Timer: " + this.timer.seconds.toFixed(2) + "ms\n" +
                 "ReactionSpeed: " + this.finalTime + "ms"
         );
+
         this.instructionsText.setText("When the CAT appears, tap it for a point. Try to avoid tapping the GHOST.")
         
 
@@ -177,12 +191,17 @@ Game.prototype = {
     increaseScore: function () {
         this.score += 1;
         this.finalTime = this.timer.ms;
+        this.reactionArray[this.a] = this.finalTime;
+        this.a++;
         this.spriteUpdate();
+        
+        // console.log("Reaction Time:" this.finalTime + "ms");
     },
     decreaseScore: function () {
         this.score -= 1; 
         this.finalTime = this.timer.ms;
         this.spriteUpdate();
+        
     },
     changeSprites: function () {
         goodSpriteArray = ['cat', 'owl'];
@@ -194,5 +213,24 @@ Game.prototype = {
         this.ghostSprite.loadTexture(goodSpriteArray[counter], 0);
         this.catSprite.loadTexture(badSpriteArray[counter], 0);
         this.spriteUpdate();
+    },
+
+    displayTimes: function(){
+    console.log("Reaction Times");
+    reactionTotal = 0;
+    for (var a = 1; a <= this.reactionArray.length-1 ; ++a){
+        console.log(this.reactionArray[a] + "ms\n");
+        reactionTotal+=this.reactionArray[a];
     }
+    reactionAverage = reactionTotal/this.reactionArray.length;
+    console.log("Average Reaction Time: " + reactionAverage + "ms");
+
+    
+}
+
 };
+function test(){
+    game.state.add('Scores', Scores);
+    game.state.start('Scores');
+
+}

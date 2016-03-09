@@ -13,13 +13,13 @@ Splash.prototype = {
         // Load all states and js files
         game.load.script('instructions', 'js/states/Instructions.js');
         game.load.script('game', 'js/states/Game.js');
+        game.load.script('scores', 'js/states/Scores.js');
     },
     // function to load all of the images needed for the game
     loadImages: function () {
         // Load images for the game
         game.load.image('cat', 'images/cat.png');
         game.load.image('ghost', 'images/ghost.png');
-        game.load.image('bomb', 'images/bomb.png');
         game.load.image('bear', 'images/bear.png');
         game.load.image('owl', 'images/owl.png');
         game.load.image('playButton', 'images/play_button.png');
@@ -57,6 +57,8 @@ Splash.prototype = {
         // Add all game states to the main Phaser.Game object
         game.state.add('Instructions', Instructions);
         game.state.add('Game', Game);
+        game.state.add('Scores', Scores);
+
     },
     // Function called after 'preload' to apply states and transition to next state
     create: function () {
