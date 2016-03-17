@@ -13,7 +13,7 @@ Instructions.prototype = {
     // Initialization function called before 'create'
     init: function () {
         // Create title text
-        this.titleText = game.make.text(game.world.centerX, 40, "ISIS Inhibition Game Prototype", {
+        this.titleText = game.make.text(game.world.centerX, 40, "Inhibition Game Prototype", {
             font: 'bold 24pt Arial',
             fill: '#0000000',
             align: 'center'
@@ -72,10 +72,12 @@ Instructions.prototype = {
     // Main update function that is called repeatedly
     update: function () {
         // Test code to move sprites randomly
+        /*
         this.catSprite.x += Math.random() <= 0.5 ? -1 : 1;
         this.catSprite.y += Math.random() <= 0.5 ? -1 : 1;
         this.ghostSprite.x += Math.random() <= 0.5 ? -1 : 1;
         this.ghostSprite.y += Math.random() <= 0.5 ? -1 : 1;
+        */
     }
 };
 function listener(){

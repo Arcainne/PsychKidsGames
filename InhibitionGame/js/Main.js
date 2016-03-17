@@ -20,7 +20,6 @@ Main.prototype = {
         game.load.image('loading', 'images/loading.png');
         game.load.image('cat', 'images/cat.png');
         game.load.image('ghost', 'images/ghost.png');
-        //game.load.image('bomb', 'images/bomb.png');
         game.load.image('bear', 'images/bear.png');
         game.load.image('playButton', 'images/play_button.png');
         game.load.image('instructionsButton', 'images/instructions_button.png');
@@ -32,6 +31,9 @@ Main.prototype = {
         game.state.add('Splash', Splash);
         // Start the Splash state
         game.state.start('Splash');
+        
+        // Initially hide the tool bar
+        $("#toolbar").hide();
     }
 };
 
