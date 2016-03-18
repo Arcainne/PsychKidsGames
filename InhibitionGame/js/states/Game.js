@@ -23,6 +23,7 @@ Game.prototype = {
     i: 0,
     counter: 0,
     spriteButtons: [],
+    countButtons: [],
     statsButton: {},
     
     init: function () {
@@ -111,9 +112,15 @@ Game.prototype = {
         
         // Display toolbar and get access to DOM elements
         $("#toolbar").show();
+        this.statsButton = $("#stats");
         this.spriteButtons.push($("#sprites1"));
         this.spriteButtons.push($("#sprites2"));
-        this.statsButton = $("#stats");
+        
+        this.countButtons.push($("#count1"));
+        this.countButtons.push($("#count2"));
+        this.countButtons.push($("#count3"));
+        this.countButtons.push($("#count4"));
+        this.countButtons.push($("#count5"));
         
         // Functions to handle DOM element inputs
         this.spriteButtons[0].on('click', function () {
@@ -174,6 +181,7 @@ Game.prototype = {
     },
     // Main update function that is called repeatedly
     update: function () {
+        this.score = this.score < 0 ? 0 : this.score;
         this.scoreText.setText("Score: " + this.score);
         this.dataText.setText(
                 "InputPos: (" + game.input.mousePointer.position.x + ", " + game.input.mousePointer.position.y + ")\n" +
