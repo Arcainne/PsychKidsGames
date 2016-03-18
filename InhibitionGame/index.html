@@ -23,10 +23,10 @@
     <body>
 
         <ul id="toolbar" class="w3-navbar w3-card w3-black w3-xlarge">
-            <li><a href="#">Statistics</a></li>
+            <li><a id="stats" href="#">Statistics</a></li>
             <li class="w3-dropdown-click">
                 <a onclick="toggleSpriteSelect()" class="w3-btn w3-hover-grey">Select Sprite</a>
-                <div id="select" class="w3-dropdown-content w3-card-4">
+                <div id="sprites" class="w3-dropdown-content w3-card-4">
                     <a id="sprites1" onclick="toggleSpriteSelect()">Cat & Ghost</a>
                     <a id="sprites2" onclick="toggleSpriteSelect()">Owl & Bear</a>
                 </div>
@@ -34,20 +34,18 @@
             <li class="w3-dropdown-click">
                 <a onclick="toggleSpriteCount()" class="w3-btn w3-hover-grey">Sprite Count</a>
                 <ul id="count" class="w3-dropdown-content w3-pagination w3-card-4 w3-border w3-round">
-                    <li><a href="#">«</a></li>
-                    <li><a href="#">1</a></li>
-                    <li><a href="#">2</a></li>
-                    <li><a href="#">3</a></li>
-                    <li><a href="#">4</a></li>
-                    <li><a href="#">5</a></li>
-                    <li><a href="#">»</a></li>
+                    <li><a id="count1" href="#">1</a></li>
+                    <li><a id="count2" href="#">2</a></li>
+                    <li><a id="count3" href="#">3</a></li>
+                    <li><a id="count4" href="#">4</a></li>
+                    <li><a id="count5" href="#">5</a></li>
                 </ul>
             </li>
             <li><a href="#">View Data</a></li>
         </ul>
         <script>
             function toggleSpriteSelect() {
-                $("#select").toggleClass("w3-show");
+                $("#sprites").toggleClass("w3-show");
                 $("#count").hide(); // not working for some reason
             }
             function toggleSpriteCount() {

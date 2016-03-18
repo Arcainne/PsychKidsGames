@@ -13,6 +13,9 @@ var Main = function () {};
 Main.prototype = {
     // Called to load images and scripts
     preload: function () {
+        // Initially hide the tool bar
+        $("#toolbar").hide();
+        
         // Load images and scripts for the Splash screen state
         game.load.script('utilities', 'js/libs/utilities.js');
         game.load.script('splash', 'js/states/Splash.js');
@@ -31,9 +34,6 @@ Main.prototype = {
         game.state.add('Splash', Splash);
         // Start the Splash state
         game.state.start('Splash');
-        
-        // Initially hide the tool bar
-        $("#toolbar").hide();
     }
 };
 

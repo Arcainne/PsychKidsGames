@@ -23,6 +23,7 @@ Game.prototype = {
     i: 0,
     counter: 0,
     spriteButtons: [],
+    statsButton: {},
     
     init: function () {
         // Create score text.
@@ -62,8 +63,6 @@ Game.prototype = {
         // Create empty sprite to hold reference to target sprite on screen
         this.targetSprite = game.make.sprite();
 
-
-
         // Create cat sprite object
         this.catSprite = game.make.sprite(Math.random() * (game.world.width),
                 Math.random() * (game.world.height), goodSprites[this.i]);
@@ -99,36 +98,33 @@ Game.prototype = {
         this.ghostSprite.visible = false;
         this.catSprite.inputEnabled = true;
         this.ghostSprite.inputEnabled = true;
-
+        this.dataText.visible = false;
 
         // Input listeners for sprites (only need to be added once if listener functions is constant)
         this.catSprite.events.onInputDown.add(this.increaseScore, this);
         this.ghostSprite.events.onInputDown.add(this.decreaseScore, this);
         //this.changeButton.events.onInputDown.add(this.changeSprites, this);
 
+        // DOM ELEMENTS ACCESS
+        // Var to allow proper function calls
+        var that = this;
+        
         // Display toolbar and get access to DOM elements
         $("#toolbar").show();
         this.spriteButtons.push($("#sprites1"));
         this.spriteButtons.push($("#sprites2"));
-        // Var to allow proper function calls
-        var that = this;
-        /*
-        var i = 0;
-        // Add event listener to DOM element
-        for (i = 0; i < this.spriteButtons.length; i++) {
-            that.i = i;
-            this.spriteButtons[i].on('click', function () {
-                that.spriteChange(that.i);
-            });
-        }
-        */
+        this.statsButton = $("#stats");
+        
+        // Functions to handle DOM element inputs
         this.spriteButtons[0].on('click', function () {
             that.spriteChange(0);
         });
         this.spriteButtons[1].on('click', function () {
             that.spriteChange(1);
         });
-        
+        this.statsButton.on('click', function () {
+            that.toggleDataDisplay();
+        });
        
         // Call function to start the sprite updates
         this.spriteUpdate();
@@ -218,5 +214,8 @@ Game.prototype = {
         this.ghostSprite.loadTexture(badSpriteArray[index], 0);
         this.catSprite.loadTexture(goodSpriteArray[index], 0);
         this.spriteUpdate();
+    },
+    toggleDataDisplay: function () {
+        this.dataText.visible = !this.dataText.visible;
     }
 };
