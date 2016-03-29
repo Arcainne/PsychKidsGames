@@ -59,6 +59,7 @@ Accuracy.prototype = {
     // Main update function that is called repeatedly
     update: function () {
         this.dataText.setText(this.text);
+        this.titleText.setText("Accuracy Log (px) " + "n=" + this.accuracyLog.length);
     }
 };
 

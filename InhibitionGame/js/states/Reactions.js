@@ -59,6 +59,7 @@ Reactions.prototype = {
     // Main update function that is called repeatedly
     update: function () {
         this.dataText.setText(this.text);
+        this.titleText.setText("Reaction Times (ms) " + "n=" + this.reactionTimes.length);
     }
 };
 
