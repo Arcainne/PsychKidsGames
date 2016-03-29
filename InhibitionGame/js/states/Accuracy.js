@@ -1,21 +1,21 @@
 /* 
- * Author: Max Zhao
- * Created: 3/20/2016
+ * Author: Sean Smith
+ * Created: 3/29/2016 11:22AM
  */
 
 // Create global empty Instructions state object
-var Scores = function () {};
+var Accuracy = function () {};
 
 // Definition of global Instructions state object
-Scores.prototype = {
-    dataButton: {},
-    reactionTimes: [],
+Accuracy.prototype = {
+    accuracyButton: {},
+    accuracyLog: [],
     text: "",
     
     // Initialization function called before 'create'
     init: function () {
         // Create title text
-        this.titleText = game.make.text(game.world.centerX, 10, "Reaction Times (ms)", {
+        this.titleText = game.make.text(game.world.centerX, 10, "Accuracy Log (px)", {
             font: 'bold 30pt Arial',
             fill: '#0000000',
             align: 'center'
@@ -44,10 +44,15 @@ Scores.prototype = {
 
         // Display toolbar and get access to DOM elements
         $("#toolbar").show();
-        this.dataButton = $("#datalog");
-        this.dataButton.html("View Game");
+        this.reactionButton = $("#reactionlog");
+        this.reactionButton.html("Reaction Times");
+        this.accuracyButton = $("#accuracylog");
+        this.accuracyButton.html("RESUME GAME");
 
-        this.dataButton.on('click', function () {
+        this.reactionButton.on('click', function () {
+            game.state.start("Reactions");
+        });
+        this.accuracyButton.on('click', function () {
             game.state.start("Game");
         });
     },
@@ -57,11 +62,11 @@ Scores.prototype = {
     }
 };
 
-function updateData(data) {
-    Scores.prototype.reactionTimes.push(data);
-    Scores.prototype.text = Scores.prototype.reactionTimes.join(', ');
+function updateAccuracyData(data) {
+    Accuracy.prototype.accuracyLog.push(data);
+    Accuracy.prototype.text = Accuracy.prototype.accuracyLog.join(', ');
 }
-function resetData() {
-    Scores.prototype.reactionTimes = [];
-    Scores.prototype.text = Scores.prototype.reactionTimes.join(', ');
+function resetAccuracyData() {
+    Accuracy.prototype.accuracyLog = [];
+    Accuracy.prototype.text = Accuracy.prototype.accuracyLog.join(', ');
 }

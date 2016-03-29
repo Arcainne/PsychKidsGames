@@ -19,14 +19,14 @@ var Game = function () {};
 Game.prototype = {
     score: 0,
     timer: 0,
+    accuracy: 0,
     spriteIndex: 0,
     spriteButtons: [],
     //countButtons: [],
-    statsButton: {},
     dataButton: {},
+    reactionButton: {},
+    accuracyButton: {},
     resetButton: {},
-    reactionTimes: [],
-    showStats: false,
     
     init: function () {
         // Create score text.
@@ -53,7 +53,7 @@ Game.prototype = {
                 }
         );
 
-        this.statsText = game.make.text(
+        this.dataText = game.make.text(
                 10,
                 60,
                 "InputPos: (0, 0)\n" +
@@ -82,6 +82,7 @@ Game.prototype = {
         // Create game timer
         this.timer = game.time.create(false);
 
+        // Center sprite anchors
         utilities.centerGameObjects([this.catSprite, this.ghostSprite]);
     },
     create: function () {
@@ -90,7 +91,7 @@ Game.prototype = {
 
         // Add all sprites/display objects to the game to be drawn
         game.add.existing(this.scoreText);
-        game.add.existing(this.statsText);
+        game.add.existing(this.dataText);
         game.add.existing(this.catSprite);
         game.add.existing(this.ghostSprite);
 
@@ -98,7 +99,7 @@ Game.prototype = {
         this.ghostSprite.visible = false;
         this.catSprite.inputEnabled = true;
         this.ghostSprite.inputEnabled = true;
-        this.statsText.visible = false;
+        this.dataText.visible = false;
 
         // Input listeners for sprites (only need to be added once if listener functions is constant)
         this.catSprite.events.onInputDown.add(this.increaseScore, this);
@@ -110,11 +111,13 @@ Game.prototype = {
 
         // Display toolbar and get access to DOM elements
         $("#toolbar").show();
-        this.statsButton = $("#stats");
+        this.dataButton = $("#data");
         this.spriteButtons.push($("#sprites1"));
         this.spriteButtons.push($("#sprites2"));
-        this.dataButton = $("#datalog");
-        this.dataButton.html("View Statistics");
+        this.reactionButton = $("#reactionlog");
+        this.reactionButton.html("Reaction Times");
+        this.accuracyButton = $("#accuracylog");
+        this.accuracyButton.html("Accuracy Log");
         this.resetButton = $("#reset");
 
         /*
@@ -126,9 +129,9 @@ Game.prototype = {
         */
 
         // Functions to handle DOM element inputs
-        this.statsButton.on('click', function () {
+        this.dataButton.on('click', function () {
             //that.showStats = that.showStats ? false : true;
-            that.statsText.visible = that.statsText.visible ? false : true;
+            that.dataText.visible = that.dataText.visible ? false : true;
             //game.debug.pointer(game.input.activePointer);
         });
         this.spriteButtons[0].on('click', function () {
@@ -137,11 +140,15 @@ Game.prototype = {
         this.spriteButtons[1].on('click', function () {
             that.spriteChange(1);
         });
-        this.dataButton.on('click', function () {
-            game.state.start('Scores');
+        this.reactionButton.on('click', function () {
+            game.state.start('Reactions');
+        });
+        this.accuracyButton.on('click', function () {
+            game.state.start('Accuracy');
         });
         this.resetButton.on('click', function () {
-            resetData();
+            resetReactionData();
+            resetAccuracyData();
             that.score = 0;
             that.spriteUpdate();
         });
@@ -196,23 +203,24 @@ Game.prototype = {
     update: function () {
         this.score = this.score < 0 ? 0 : this.score;
         this.scoreText.setText("Score: " + this.score);
-        this.statsText.setText(
+        this.accuracy = Math.floor(utilities.dist(game.input.activePointer.position.x, game.input.activePointer.position.y,
+                        this.targetSprite.position.x, this.targetSprite.position.y));
+        this.dataText.setText(
                 "InputPos: (" + Math.floor(game.input.activePointer.position.x) + ", " + Math.floor(game.input.activePointer.position.y) + ")\n" +
                 "TargetPos: (" + Math.floor(this.targetSprite.position.x) + ", " + Math.floor(this.targetSprite.position.y) + ")\n" +
                 "DistanceVect: (" + Math.floor(this.targetSprite.position.x - game.input.activePointer.position.x) + ", " +
                 Math.floor(this.targetSprite.position.y - game.input.activePointer.position.y) + ")\n" +
-                "Distance: " + Math.floor(utilities.dist(game.input.activePointer.position.x, this.targetSprite.position.x,
-                        game.input.activePointer.position.y, this.targetSprite.position.y)) + "px\n" +
+                "Accuracy: " + this.accuracy + "px\n" +
                 "Timer: " + this.timer.seconds.toFixed(2) + "ms\n" +
                 "ReactionSpeed: " + this.finalTime + "ms"
                 );
-        //this.instructionsText.setText("When the CAT appears, tap it for a point. Try to avoid tapping the GHOST.");
     },
     // TODO: Group these into 1 function that takes in a score argument
     increaseScore: function () {
         this.score += 1;
         this.finalTime = this.timer.ms;
-        updateData(this.finalTime);
+        updateReactionData(this.finalTime);
+        updateAccuracyData(this.accuracy);
         this.timer.stop();
         this.spriteUpdate();
     },
@@ -229,6 +237,7 @@ Game.prototype = {
         this.ghostSprite.loadTexture(badSpriteArray[index], 0);
         this.catSprite.loadTexture(goodSpriteArray[index], 0);
         
+        // Resize sprites accordingly
         if (index === 1) {
             this.catSprite.scale.set(0.4, 0.4);
             this.ghostSprite.scale.set(0.45, 0.45);
