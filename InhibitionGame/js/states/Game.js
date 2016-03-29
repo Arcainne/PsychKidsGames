@@ -5,13 +5,11 @@
 
 /*
  * TODO:
- *      + Add ability to swap/cycle sprite groups via a GUI
  *      + Add ability to change the sprite count dynamically via a GUI
- *      + Improve/clean up game GUI
- *      + Test on mobile/tablet browser
+ *        (Might change mechanics/timing of the game)
  * ISSUES:
  *      - If tapping sprites rapidly, the timer for sprite might display them rapidly (ghost timer function gets called)
- *      - Fix "Statistics" button not working when going from Data view to Game view
+ *      - Fix "View Data" button not working when going from Statistics view to Game view
  */
 
 // Create global empty Game state object
@@ -23,11 +21,12 @@ Game.prototype = {
     timer: 0,
     spriteIndex: 0,
     spriteButtons: [],
-    countButtons: [],
+    //countButtons: [],
     statsButton: {},
     dataButton: {},
     resetButton: {},
     reactionTimes: [],
+    showStats: false,
     
     init: function () {
         // Create score text.
@@ -54,7 +53,7 @@ Game.prototype = {
                 }
         );
 
-        this.dataText = game.make.text(
+        this.statsText = game.make.text(
                 10,
                 60,
                 "InputPos: (0, 0)\n" +
@@ -91,48 +90,46 @@ Game.prototype = {
 
         // Add all sprites/display objects to the game to be drawn
         game.add.existing(this.scoreText);
-        //game.add.existing(this.instructionsText);
-        game.add.existing(this.dataText);
-        //game.add.existing(this.changeButton);
+        game.add.existing(this.statsText);
         game.add.existing(this.catSprite);
         game.add.existing(this.ghostSprite);
 
-        //this.changeButton.inputEnabled = true;
         this.catSprite.visible = false;
         this.ghostSprite.visible = false;
         this.catSprite.inputEnabled = true;
         this.ghostSprite.inputEnabled = true;
-        this.dataText.visible = false;
+        this.statsText.visible = false;
 
         // Input listeners for sprites (only need to be added once if listener functions is constant)
         this.catSprite.events.onInputDown.add(this.increaseScore, this);
         this.ghostSprite.events.onInputDown.add(this.decreaseScore, this);
-        //this.changeButton.events.onInputDown.add(this.changeSprites, this);
 
         // DOM ELEMENTS ACCESS
         // Var to allow proper function calls
         var that = this;
-        
+
         // Display toolbar and get access to DOM elements
         $("#toolbar").show();
         this.statsButton = $("#stats");
         this.spriteButtons.push($("#sprites1"));
         this.spriteButtons.push($("#sprites2"));
-        
+        this.dataButton = $("#datalog");
+        this.dataButton.html("View Statistics");
+        this.resetButton = $("#reset");
+
+        /*
         this.countButtons.push($("#count1"));
         this.countButtons.push($("#count2"));
         this.countButtons.push($("#count3"));
         this.countButtons.push($("#count4"));
         this.countButtons.push($("#count5"));
-        
-        this.dataButton = $("#datalog");
-        this.dataButton.html("View Data");
-        
-        this.resetButton = $("#reset");
-        
+        */
+
         // Functions to handle DOM element inputs
         this.statsButton.on('click', function () {
-            that.toggleDataDisplay();
+            //that.showStats = that.showStats ? false : true;
+            that.statsText.visible = that.statsText.visible ? false : true;
+            //game.debug.pointer(game.input.activePointer);
         });
         this.spriteButtons[0].on('click', function () {
             that.spriteChange(0);
@@ -148,7 +145,7 @@ Game.prototype = {
             that.score = 0;
             that.spriteUpdate();
         });
-       
+
         // Call function to start the sprite updates
         this.spriteUpdate();
     },
@@ -199,11 +196,13 @@ Game.prototype = {
     update: function () {
         this.score = this.score < 0 ? 0 : this.score;
         this.scoreText.setText("Score: " + this.score);
-        this.dataText.setText(
-                "InputPos: (" + game.input.mousePointer.position.x + ", " + game.input.mousePointer.position.y + ")\n" +
+        this.statsText.setText(
+                "InputPos: (" + Math.floor(game.input.activePointer.position.x) + ", " + Math.floor(game.input.activePointer.position.y) + ")\n" +
                 "TargetPos: (" + Math.floor(this.targetSprite.position.x) + ", " + Math.floor(this.targetSprite.position.y) + ")\n" +
-                "Distance: (" + Math.floor(this.targetSprite.position.x - game.input.mousePointer.position.x) + ", " +
-                Math.floor(this.targetSprite.position.y - game.input.mousePointer.position.y) + ")\n" +
+                "DistanceVect: (" + Math.floor(this.targetSprite.position.x - game.input.activePointer.position.x) + ", " +
+                Math.floor(this.targetSprite.position.y - game.input.activePointer.position.y) + ")\n" +
+                "Distance: " + Math.floor(utilities.dist(game.input.activePointer.position.x, this.targetSprite.position.x,
+                        game.input.activePointer.position.y, this.targetSprite.position.y)) + "px\n" +
                 "Timer: " + this.timer.seconds.toFixed(2) + "ms\n" +
                 "ReactionSpeed: " + this.finalTime + "ms"
                 );
@@ -229,9 +228,15 @@ Game.prototype = {
 
         this.ghostSprite.loadTexture(badSpriteArray[index], 0);
         this.catSprite.loadTexture(goodSpriteArray[index], 0);
+        
+        if (index === 1) {
+            this.catSprite.scale.set(0.4, 0.4);
+            this.ghostSprite.scale.set(0.45, 0.45);
+        } else if (index ===0 ) {
+            this.catSprite.scale.set(0.5, 0.5);
+            this.ghostSprite.scale.set(0.5, 0.5);
+        }
+        this.timer.stop();
         this.spriteUpdate();
-    },
-    toggleDataDisplay: function () {
-        this.dataText.visible = !this.dataText.visible;
     }
 };

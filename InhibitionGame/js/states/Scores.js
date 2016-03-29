@@ -15,8 +15,8 @@ Scores.prototype = {
     // Initialization function called before 'create'
     init: function () {
         // Create title text
-        this.titleText = game.make.text(game.world.centerX, 20, "Reaction Times (ms)", {
-            font: 'bold 36pt Arial',
+        this.titleText = game.make.text(game.world.centerX, 10, "Reaction Times (ms)", {
+            font: 'bold 30pt Arial',
             fill: '#0000000',
             align: 'center'
         });
@@ -24,7 +24,7 @@ Scores.prototype = {
         this.titleText.anchor.set(0.5, 0);
 
         this.dataText = game.make.text(
-                10, 90, this.text,
+                10, 70, this.text,
                 {
                     font: 'bold 24pt Arial',
                     fill: 'black',

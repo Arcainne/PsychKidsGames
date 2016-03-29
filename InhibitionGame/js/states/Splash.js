@@ -46,7 +46,7 @@ Splash.prototype = {
         game.add.existing(this.logo);
         game.add.existing(this.loadingBar);
         game.add.existing(this.status);
-        this.load.setPreloadSprite(this.loadingBar);
+        game.load.setPreloadSprite(this.loadingBar);
 
         // Call corresponding load functions
         this.loadScripts();
