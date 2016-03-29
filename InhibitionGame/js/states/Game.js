@@ -102,7 +102,7 @@ Game.prototype = {
         this.dataText.visible = false;
 
         // Input listeners for sprites (only need to be added once if listener functions is constant)
-        this.catSprite.events.onInputDown.add(this.increaseScore, this);
+        this.catSprite.events.onInputDown.add(this.correctClick, this);
         this.ghostSprite.events.onInputDown.add(this.decreaseScore, this);
 
         // DOM ELEMENTS ACCESS
@@ -203,8 +203,6 @@ Game.prototype = {
     update: function () {
         this.score = this.score < 0 ? 0 : this.score;
         this.scoreText.setText("Score: " + this.score);
-        this.accuracy = Math.floor(utilities.dist(game.input.activePointer.position.x, game.input.activePointer.position.y,
-                        this.targetSprite.position.x, this.targetSprite.position.y));
         this.dataText.setText(
                 "InputPos: (" + Math.floor(game.input.activePointer.position.x) + ", " + Math.floor(game.input.activePointer.position.y) + ")\n" +
                 "TargetPos: (" + Math.floor(this.targetSprite.position.x) + ", " + Math.floor(this.targetSprite.position.y) + ")\n" +
@@ -215,12 +213,18 @@ Game.prototype = {
                 "ReactionSpeed: " + this.finalTime + "ms"
                 );
     },
+    correctClick: function () {
+        this.finalTime = this.timer.ms;
+        this.accuracy = Math.floor(utilities.dist(game.input.activePointer.position.x, game.input.activePointer.position.y,
+                        this.targetSprite.position.x, this.targetSprite.position.y));
+        updateReactionData(this.finalTime);
+        updateAccuracyData(this.accuracy);
+        this.increaseScore();
+    },
     // TODO: Group these into 1 function that takes in a score argument
     increaseScore: function () {
         this.score += 1;
         this.finalTime = this.timer.ms;
-        updateReactionData(this.finalTime);
-        updateAccuracyData(this.accuracy);
         this.timer.stop();
         this.spriteUpdate();
     },
