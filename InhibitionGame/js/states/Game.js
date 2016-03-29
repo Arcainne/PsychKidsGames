@@ -11,6 +11,7 @@
  *      + Test on mobile/tablet browser
  * ISSUES:
  *      - If tapping sprites rapidly, the timer for sprite might display them rapidly (ghost timer function gets called)
+ *      - Fix "Statistics" button not working when going from Data view to Game view
  */
 
 // Create global empty Game state object
@@ -20,11 +21,13 @@ var Game = function () {};
 Game.prototype = {
     score: 0,
     timer: 0,
-    i: 0,
-    counter: 0,
+    spriteIndex: 0,
     spriteButtons: [],
     countButtons: [],
     statsButton: {},
+    dataButton: {},
+    resetButton: {},
+    reactionTimes: [],
     
     init: function () {
         // Create score text.
@@ -66,12 +69,12 @@ Game.prototype = {
 
         // Create cat sprite object
         this.catSprite = game.make.sprite(Math.random() * (game.world.width),
-                Math.random() * (game.world.height), goodSprites[this.i]);
+                Math.random() * (game.world.height), goodSprites[this.spriteIndex]);
         this.catSprite.scale.set(0.5, 0.5);
 
         // Create ghost sprite object
         this.ghostSprite = game.make.sprite(Math.random() * (game.world.width),
-                Math.random() * (game.world.height), badSprites[this.i]);
+                Math.random() * (game.world.height), badSprites[this.spriteIndex]);
         this.ghostSprite.scale.set(0.5, 0.5);
 
         this.changeButton = game.make.sprite(10, 250, 'playButton');
@@ -122,15 +125,28 @@ Game.prototype = {
         this.countButtons.push($("#count4"));
         this.countButtons.push($("#count5"));
         
+        this.dataButton = $("#datalog");
+        this.dataButton.html("View Data");
+        
+        this.resetButton = $("#reset");
+        
         // Functions to handle DOM element inputs
+        this.statsButton.on('click', function () {
+            that.toggleDataDisplay();
+        });
         this.spriteButtons[0].on('click', function () {
             that.spriteChange(0);
         });
         this.spriteButtons[1].on('click', function () {
             that.spriteChange(1);
         });
-        this.statsButton.on('click', function () {
-            that.toggleDataDisplay();
+        this.dataButton.on('click', function () {
+            game.state.start('Scores');
+        });
+        this.resetButton.on('click', function () {
+            resetData();
+            that.score = 0;
+            that.spriteUpdate();
         });
        
         // Call function to start the sprite updates
@@ -140,7 +156,7 @@ Game.prototype = {
     spriteUpdate: function () {
         // Test code to move sprites randomly
         var catOrGhost = Math.random() * 10;
-        var newPosX, newPosY, randomTime;
+        var newPosX, newPosY, resetTime;
         this.ghostSprite.visible = false;
         this.catSprite.visible = false;
 
@@ -162,8 +178,8 @@ Game.prototype = {
             this.targetSprite = this.ghostSprite;
 
             // Time ghost to disappear
-            randomTime = utilities.randRange(3000, 4000);
-            game.time.events.add(randomTime, this.increaseScore, this);
+            resetTime = 3000;
+            game.time.events.add(resetTime, this.increaseScore, this);
 
         } else {
             // Constrain sprite position within screen
@@ -197,22 +213,14 @@ Game.prototype = {
     increaseScore: function () {
         this.score += 1;
         this.finalTime = this.timer.ms;
+        updateData(this.finalTime);
+        this.timer.stop();
         this.spriteUpdate();
     },
     decreaseScore: function () {
         this.score -= 1;
         this.finalTime = this.timer.ms;
-        this.spriteUpdate();
-    },
-    changeSprites: function () {
-        goodSpriteArray = ['cat', 'owl'];
-        badSpriteArray = ['ghost', 'bear'];
-        counter++;
-        if (counter >= goodSpriteArray.length) {
-            counter = 0;
-        }
-        this.ghostSprite.loadTexture(goodSpriteArray[counter], 0);
-        this.catSprite.loadTexture(badSpriteArray[counter], 0);
+        this.timer.stop();
         this.spriteUpdate();
     },
     spriteChange: function (index) {
