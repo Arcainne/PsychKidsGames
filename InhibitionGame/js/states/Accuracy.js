@@ -11,6 +11,7 @@ Accuracy.prototype = {
     accuracyButton: {},
     accuracyLog: [],
     text: "",
+    avg: 0,
     
     // Initialization function called before 'create'
     init: function () {
@@ -59,7 +60,15 @@ Accuracy.prototype = {
     // Main update function that is called repeatedly
     update: function () {
         this.dataText.setText(this.text);
-        this.titleText.setText("Accuracy Log (px) " + "n=" + this.accuracyLog.length);
+        this.avg = this.accuracyLog.length > 0 ? this.getAvg() : 0;
+        this.titleText.setText("Accuracy Log (px) " + "n=" + this.accuracyLog.length + ", avg=" + this.avg + "px");
+    },
+    getAvg: function () {
+        var sum = 0;
+        for (var i = 0; i < this.accuracyLog.length; i++) {
+            sum += this.accuracyLog[i];
+        }
+        return Math.floor(sum / this.accuracyLog.length);
     }
 };
 

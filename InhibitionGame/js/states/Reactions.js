@@ -11,6 +11,7 @@ Reactions.prototype = {
     reactionButton: {},
     reactionTimes: [],
     text: "",
+    avg: 0,
     
     // Initialization function called before 'create'
     init: function () {
@@ -59,7 +60,15 @@ Reactions.prototype = {
     // Main update function that is called repeatedly
     update: function () {
         this.dataText.setText(this.text);
-        this.titleText.setText("Reaction Times (ms) " + "n=" + this.reactionTimes.length);
+        this.avg = this.reactionTimes.length > 0 ? this.getAvg() : 0;
+        this.titleText.setText("Reaction Times (ms) " + "n=" + this.reactionTimes.length + ", avg=" + this.avg + "ms");
+    },
+    getAvg: function () {
+        var sum = 0;
+        for (var i = 0; i < this.reactionTimes.length; i++) {
+            sum += this.reactionTimes[i];
+        }
+        return Math.floor(sum / this.reactionTimes.length);
     }
 };
 

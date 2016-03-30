@@ -183,7 +183,9 @@ Game.prototype = {
 
             // Time ghost to disappear
             resetTime = 3000;
-            game.time.events.add(resetTime, this.increaseScore, this);
+            this.timer.clearPendingEvents();
+            this.timer.add(resetTime, this.increaseScore, this);
+            //game.time.events.add(resetTime, this.increaseScore, this);
 
         } else {
             // Constrain sprite position within screen
