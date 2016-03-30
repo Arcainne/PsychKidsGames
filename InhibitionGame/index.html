@@ -24,7 +24,7 @@
     </head>
     <body>
         <ul id="toolbar" class="w3-navbar w3-card w3-black w3-xlarge">
-            <li><a id="data">View Data</a></li>
+            <li><a id="data" onclick="hideSpriteSelect()">View Data</a></li>
             <li class="w3-dropdown-click">
                 <a onclick="toggleSpriteSelect()" class="w3-btn w3-hover-grey">Select Sprite</a>
                 <div id="sprites" class="w3-dropdown-content w3-card-4">
@@ -44,20 +44,17 @@
                 </ul>
             </li>
             -->
-            <li><a id="reactionlog">Reaction Times</a></li>
-            <li><a id="accuracylog">Accuracy Log</a></li>
-            <li><a id="reset">Reset</a></li>
+            <li><a id="reactionlog" onclick="hideSpriteSelect()">Reaction Times</a></li>
+            <li><a id="accuracylog" onclick="hideSpriteSelect()">Accuracy Log</a></li>
+            <li><a id="reset" onclick="hideSpriteSelect()">Reset</a></li>
         </ul>
         <script>
             function toggleSpriteSelect() {
-                $("#sprites").toggleClass("w3-show");
-                //$("#count").hide(); // not working for some reason
+                $("#sprites").toggle();
             }
-            /*
-            function toggleSpriteCount() {
-                $("#count").toggleClass("w3-show");
+            function hideSpriteSelect() {
+                $("#sprites").hide();
             }
-            */
         </script>
     </body>
 </html>

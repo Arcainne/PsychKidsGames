@@ -8,7 +8,6 @@
  *      + Add ability to change the sprite count dynamically via a GUI
  *        (Might change mechanics/timing of the game)
  * ISSUES:
- *      - If tapping sprites rapidly, the timer for sprite might display them rapidly (ghost timer function gets called)
  *      - Fix "View Data" button not working when going from Statistics view to Game view
  */
 
@@ -21,9 +20,10 @@ Game.prototype = {
     timer: 0,
     accuracy: 0,
     spriteIndex: 0,
+    toolbar: {},
+    dataButton: {},
     spriteButtons: [],
     //countButtons: [],
-    dataButton: {},
     reactionButton: {},
     accuracyButton: {},
     resetButton: {},
@@ -110,7 +110,8 @@ Game.prototype = {
         var that = this;
 
         // Display toolbar and get access to DOM elements
-        $("#toolbar").show();
+        this.toolbar = $("#toolbar");
+        this.toolbar.show();
         this.dataButton = $("#data");
         this.spriteButtons.push($("#sprites1"));
         this.spriteButtons.push($("#sprites2"));
@@ -214,6 +215,12 @@ Game.prototype = {
                 "Timer: " + this.timer.seconds.toFixed(2) + "ms\n" +
                 "ReactionSpeed: " + this.finalTime + "ms"
                 );
+        // Touch and hold the screen for 5 seconds to toggle the toolbar
+        if (game.input.activePointer.duration > 5000) {
+            this.toolbar.toggle();
+            this.dataText.visible = false;
+            game.input.activePointer.reset();
+        }
     },
     correctClick: function () {
         this.finalTime = this.timer.ms;
