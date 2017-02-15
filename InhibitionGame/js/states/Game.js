@@ -183,7 +183,7 @@ Game.prototype = {
             this.targetSprite = this.ghostSprite;
 
             // Time ghost to disappear
-            resetTime = 3000;
+            resetTime = 1500;
             this.timer.clearPendingEvents();
             this.timer.add(resetTime, this.increaseScore, this);
             //game.time.events.add(resetTime, this.increaseScore, this);
