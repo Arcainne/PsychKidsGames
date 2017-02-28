@@ -20,6 +20,8 @@ Game.prototype = {
     timer: 0,
     accuracy: 0,
     spriteIndex: 0,
+    targetSpriteIndex: 0,
+    inhibSpriteIndex: 0,
     toolbar: {},
     dataButton: {},
     spriteButtons: [],
@@ -30,6 +32,7 @@ Game.prototype = {
     
     init: function () {
         // Create score text.
+        var sprites = ['cat', 'owl', 'ghost', 'bear'];
         var goodSprites = ['cat', 'owl'];
         var badSprites = ['ghost', 'bear'];
 
@@ -120,14 +123,6 @@ Game.prototype = {
         this.accuracyButton = $("#accuracylog");
         this.accuracyButton.html("Accuracy Log");
         this.resetButton = $("#reset");
-
-        /*
-        this.countButtons.push($("#count1"));
-        this.countButtons.push($("#count2"));
-        this.countButtons.push($("#count3"));
-        this.countButtons.push($("#count4"));
-        this.countButtons.push($("#count5"));
-        */
 
         // Functions to handle DOM element inputs
         this.dataButton.on('click', function () {
