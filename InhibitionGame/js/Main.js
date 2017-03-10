@@ -21,6 +21,10 @@ Main.prototype = {
         game.load.script('splash', 'js/states/Splash.js');
         game.load.image('logo', 'images/LOGO_tiny_1.jpg');
         game.load.image('loading', 'images/loading.png');
+        for (var i = 0; i < 9; i++) {
+            game.load.image('pair'+i+'_1', 'images/pair'+i+'_1.png');
+            game.load.image('pair'+i+'_2', 'images/pair'+i+'_2.png');
+        }
         /*
         game.load.image('cat', 'images/cat.png');
         game.load.image('ghost', 'images/ghost.png');

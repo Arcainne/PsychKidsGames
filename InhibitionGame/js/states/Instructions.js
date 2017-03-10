@@ -38,6 +38,7 @@ Instructions.prototype = {
         this.instructionsText.anchor.set(0.5, 0);
         
         var sprite = Math.round(utilities.randRange(0, 8));
+        console.log("sprite: " + 'pair'+sprite+'_1');
         
         // Create target sprite
         this.targetSprite = game.make.sprite(game.world.width / 4, this.instructionsText.y + this.instructionsText.height / 2 - 70, 'pair'+sprite+'_1');
