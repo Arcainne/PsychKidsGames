@@ -26,7 +26,7 @@ Instructions.prototype = {
         this.instructionsText = game.make.text(
                 game.world.centerX,
                 this.instructionsSprite.y + this.instructionsSprite.height / 1.5,
-                "When the CAT/OWL appears, tap it for a point. Try to avoid tapping the GHOST/BEAR.",
+                "When the CAT/OWL appears, tap it for a point. Try to avoid tapping the DOG/BEAR.",
                 {
                     font: 'bold 20pt Arial',
                     fill: 'black',
@@ -36,7 +36,18 @@ Instructions.prototype = {
                 }
         );
         this.instructionsText.anchor.set(0.5, 0);
+        
+        var sprite = Math.round(utilities.randRange(0, 8));
+        
+        // Create target sprite
+        this.targetSprite = game.make.sprite(game.world.width / 4, this.instructionsText.y + this.instructionsText.height / 2 - 70, 'pair'+sprite+'_1');
+        this.targetSprite.scale.set(0.5, 0.5);
+        
+        // Create inhibit sprite object
+        this.inhibitSprite = game.make.sprite(game.world.width - game.world.width / 4, this.instructionsText.y + this.instructionsText.height / 2 - 60, 'pair'+sprite+'_2');
+        this.inhibitSprite.scale.set(0.5, 0.5);
 
+        /*
         // Create cat sprite object
         this.catSprite = game.make.sprite(game.world.width / 4, this.instructionsText.y + this.instructionsText.height / 2 - 70, 'cat');
         this.catSprite.scale.set(0.5, 0.5);
@@ -52,6 +63,7 @@ Instructions.prototype = {
         // Create bear sprite object
         this.bearSprite = game.make.sprite(game.world.width - game.world.width / 4, this.instructionsText.y + this.instructionsText.height / 2 + 70, 'bear');
         this.bearSprite.scale.set(0.45, 0.45);
+        */
 
         // Create play button sprite object
         this.playButtonSprite = game.add.sprite(game.world.centerX, this.instructionsText.y + this.instructionsText.height, 'playButton');
@@ -59,7 +71,7 @@ Instructions.prototype = {
         this.playButtonSprite.scale.set(0.4, 0.4);
 
         // Center sprite objects anchor
-        utilities.centerGameObjects([this.titleText, this.instructionsSprite, this.catSprite, this.owlSprite, this.ghostSprite, this.bearSprite]);
+        utilities.centerGameObjects([this.titleText, this.instructionsSprite]);
     },
     // Starting function called after 'init'
     create: function () {
@@ -70,10 +82,12 @@ Instructions.prototype = {
         game.add.existing(this.titleText);
         game.add.existing(this.instructionsSprite);
         game.add.existing(this.instructionsText);
+        /*
         game.add.existing(this.owlSprite);
         game.add.existing(this.catSprite);
         game.add.existing(this.ghostSprite);
         game.add.existing(this.bearSprite);
+        */
         game.add.existing(this.playButtonSprite);
         this.playButtonSprite.inputEnabled = true;
         this.playButtonSprite.events.onInputDown.add(listener, this);
