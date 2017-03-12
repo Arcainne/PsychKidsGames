@@ -12,10 +12,10 @@
  */
 
 // Create global empty Game state object
-var Game = function () {};
+INHIB.Game = function () {};
 
 // Define global Game state object
-Game.prototype = {
+INHIB.Game.prototype = {
     score: 0,
     timer: 0,
     accuracy: 0,

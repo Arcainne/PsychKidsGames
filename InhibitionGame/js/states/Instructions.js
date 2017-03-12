@@ -4,10 +4,10 @@
  */
 
 // Create global empty Instructions state object
-var Instructions = function () {};
+INHIB.Instructions = function () {};
 
 // Definition of global Instructions state object
-Instructions.prototype = {
+INHIB.Instructions.prototype = {
     // Initialization function called before 'create'
     init: function () {
         // Create title text
@@ -37,16 +37,18 @@ Instructions.prototype = {
         );
         this.instructionsText.anchor.set(0.5, 0);
         
-        var sprite = Math.round(utilities.randRange(0, 8));
-        console.log("sprite: " + 'pair'+sprite+'_1');
+        // Get random sprite pair
+        var spriteID = Math.round(INHIB.Utils.randRange(0, 8));
         
         // Create target sprite
-        this.targetSprite = game.make.sprite(game.world.width / 4, this.instructionsText.y + this.instructionsText.height / 2 - 70, 'pair'+sprite+'_1');
-        this.targetSprite.scale.set(0.5, 0.5);
+        this.targetSprite = game.make.sprite(game.world.width / 4, this.instructionsText.y + this.instructionsText.height / 2 - 70, 'pair'+spriteID+'_1');
+        this.targetSprite.width = 64;
+        this.targetSprite.height = 64;
         
         // Create inhibit sprite object
-        this.inhibitSprite = game.make.sprite(game.world.width - game.world.width / 4, this.instructionsText.y + this.instructionsText.height / 2 - 60, 'pair'+sprite+'_2');
-        this.inhibitSprite.scale.set(0.5, 0.5);
+        this.inhibitSprite = game.make.sprite(game.world.width - game.world.width / 4, this.instructionsText.y + this.instructionsText.height / 2 - 60, 'pair'+spriteID+'_2');
+        this.inhibitSprite.width = 64;
+        this.inhibitSprite.height = 64;
 
         /*
         // Create cat sprite object
@@ -72,7 +74,7 @@ Instructions.prototype = {
         this.playButtonSprite.scale.set(0.4, 0.4);
 
         // Center sprite objects anchor
-        utilities.centerGameObjects([this.titleText, this.instructionsSprite]);
+        INHIB.Utils.centerGameObjects([this.titleText, this.instructionsSprite]);
     },
     // Starting function called after 'init'
     create: function () {
@@ -83,6 +85,8 @@ Instructions.prototype = {
         game.add.existing(this.titleText);
         game.add.existing(this.instructionsSprite);
         game.add.existing(this.instructionsText);
+        game.add.existing(this.targetSprite);
+        game.add.existing(this.inhibitSprite);
         /*
         game.add.existing(this.owlSprite);
         game.add.existing(this.catSprite);

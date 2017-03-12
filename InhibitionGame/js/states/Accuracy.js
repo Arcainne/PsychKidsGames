@@ -4,10 +4,10 @@
  */
 
 // Create global empty Instructions state object
-var Accuracy = function () {};
+INHIB.Accuracy = function () {};
 
 // Definition of global Instructions state object
-Accuracy.prototype = {
+INHIB.Accuracy.prototype = {
     accuracyButton: {},
     accuracyLog: [],
     text: "",

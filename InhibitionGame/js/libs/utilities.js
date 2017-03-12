@@ -3,7 +3,8 @@
  * Created: 1/22/2016
  */
 
-var utilities = {
+function Utils() {}
+Utils.prototype = {
     centerGameObjects: function (objects) {
         objects.forEach(function (object) {
             object.anchor.setTo(0.5);
@@ -16,3 +17,4 @@ var utilities = {
         return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
     }
 };
+INHIB.Utils = new Utils();

@@ -4,17 +4,19 @@
  */
 
 // Create global empty Splash state object
-var Splash = function () {};
+INHIB.Splash = function (game) {};
 
 // Definition of global Splash state object
-Splash.prototype = {
+INHIB.Splash.prototype = {
     // Function to load all the scripts and states needed for the game
     loadScripts: function () {
         // Load all states and js files
+        /*
         game.load.script('instructions', 'js/states/Instructions.js');
         game.load.script('game', 'js/states/Game.js');
         game.load.script('reactions', 'js/states/Reactions.js');
         game.load.script('accuracy', 'js/states/Accuracy.js');
+        */
     },
     // function to load all of the images needed for the game
     loadImages: function () {
@@ -42,7 +44,7 @@ Splash.prototype = {
         this.status = game.make.text(game.world.centerX, game.world.centerY + 100, 'Loading...', {fill: 'black'});
 
         // Center all the passed objects' anchors
-        utilities.centerGameObjects([this.logo, this.loadingBar, this.status]);
+        INHIB.Utils.centerGameObjects([this.logo, this.loadingBar, this.status]);
     },
     // Function called after 'init' to call all the load functions
     preload: function () {
@@ -56,16 +58,16 @@ Splash.prototype = {
         game.load.setPreloadSprite(this.loadingBar);
 
         // Call corresponding load functions
-        this.loadScripts();
+        //this.loadScripts();
         this.loadImages();
     },
     // Function to handle adding all the states for the game
     addGameStates: function () {
         // Add all game states to the main Phaser.Game object
-        game.state.add('Instructions', Instructions);
-        game.state.add('Game', Game);
-        game.state.add('Reactions', Reactions);
-        game.state.add('Accuracy', Accuracy);
+        game.state.add('Instructions', INHIB.Instructions);
+        game.state.add('Game', INHIB.Game);
+        game.state.add('Reactions', INHIB.Reactions);
+        game.state.add('Accuracy', INHIB.Accuracy);
     },
     // Function called after 'preload' to apply states and transition to next state
     create: function () {
@@ -77,6 +79,6 @@ Splash.prototype = {
         // Timeout of 2sec until state transition
         setTimeout(function () {
             game.state.start("Instructions");
-        }, 2000);
+        }, 1000);
     }
 };

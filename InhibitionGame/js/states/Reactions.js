@@ -4,10 +4,10 @@
  */
 
 // Create global empty Instructions state object
-var Reactions = function () {};
+INHIB.Reactions = function () {};
 
 // Definition of global Instructions state object
-Reactions.prototype = {
+INHIB.Reactions.prototype = {
     reactionButton: {},
     reactionTimes: [],
     text: "",
