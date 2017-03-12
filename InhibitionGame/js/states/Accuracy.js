@@ -73,10 +73,10 @@ INHIB.Accuracy.prototype = {
 };
 
 function updateAccuracyData(data) {
-    Accuracy.prototype.accuracyLog.push(data);
-    Accuracy.prototype.text = Accuracy.prototype.accuracyLog.join(', ');
+    INHIB.Accuracy.prototype.accuracyLog.push(data);
+    INHIB.Accuracy.prototype.text = INHIB.Accuracy.prototype.accuracyLog.join(', ');
 }
 function resetAccuracyData() {
-    Accuracy.prototype.accuracyLog = [];
-    Accuracy.prototype.text = Accuracy.prototype.accuracyLog.join(', ');
+    INHIB.Accuracy.prototype.accuracyLog = [];
+    INHIB.Accuracy.prototype.text = INHIB.Accuracy.prototype.accuracyLog.join(', ');
 }

@@ -8,29 +8,13 @@ INHIB.Splash = function (game) {};
 
 // Definition of global Splash state object
 INHIB.Splash.prototype = {
-    // Function to load all the scripts and states needed for the game
-    loadScripts: function () {
-        // Load all states and js files
-        /*
-        game.load.script('instructions', 'js/states/Instructions.js');
-        game.load.script('game', 'js/states/Game.js');
-        game.load.script('reactions', 'js/states/Reactions.js');
-        game.load.script('accuracy', 'js/states/Accuracy.js');
-        */
-    },
     // function to load all of the images needed for the game
     loadImages: function () {
         // Load images for the game
-        /*
-        game.load.image('cat', 'images/cat.png');
-        game.load.image('ghost', 'images/ghost.png');
-        game.load.image('bear', 'images/bear.png');
-        game.load.image('owl', 'images/owl.png');
-        */
         game.load.image('playButton', 'images/play_button.png');
         game.load.image('instructionsButton', 'images/instructions_button.png');
 
-        for (var i = 0; i < 9; i++) {
+        for (var i = 0; i < INHIB.spritePairCount; i++) {
             game.load.image('pair'+i+'_1', 'images/pair'+i+'_1.png');
             game.load.image('pair'+i+'_2', 'images/pair'+i+'_2.png');
         }
@@ -58,7 +42,6 @@ INHIB.Splash.prototype = {
         game.load.setPreloadSprite(this.loadingBar);
 
         // Call corresponding load functions
-        //this.loadScripts();
         this.loadImages();
     },
     // Function to handle adding all the states for the game

@@ -42,31 +42,13 @@ INHIB.Instructions.prototype = {
         
         // Create target sprite
         this.targetSprite = game.make.sprite(game.world.width / 4, this.instructionsText.y + this.instructionsText.height / 2 - 70, 'pair'+spriteID+'_1');
-        this.targetSprite.width = 64;
-        this.targetSprite.height = 64;
+        this.targetSprite.width = 100;
+        this.targetSprite.height = 100;
         
         // Create inhibit sprite object
-        this.inhibitSprite = game.make.sprite(game.world.width - game.world.width / 4, this.instructionsText.y + this.instructionsText.height / 2 - 60, 'pair'+spriteID+'_2');
-        this.inhibitSprite.width = 64;
-        this.inhibitSprite.height = 64;
-
-        /*
-        // Create cat sprite object
-        this.catSprite = game.make.sprite(game.world.width / 4, this.instructionsText.y + this.instructionsText.height / 2 - 70, 'cat');
-        this.catSprite.scale.set(0.5, 0.5);
-        
-        // Create owl sprite object
-        this.owlSprite = game.make.sprite(game.world.width / 4, this.instructionsText.y + this.instructionsText.height / 2 + 70, 'owl');
-        this.owlSprite.scale.set(0.4, 0.4);
-
-        // Create ghost sprite object
-        this.ghostSprite = game.make.sprite(game.world.width - game.world.width / 4, this.instructionsText.y + this.instructionsText.height / 2 - 60, 'ghost');
-        this.ghostSprite.scale.set(0.5, 0.5);
-        
-        // Create bear sprite object
-        this.bearSprite = game.make.sprite(game.world.width - game.world.width / 4, this.instructionsText.y + this.instructionsText.height / 2 + 70, 'bear');
-        this.bearSprite.scale.set(0.45, 0.45);
-        */
+        this.inhibitSprite = game.make.sprite(game.world.width - game.world.width / 4 - 100, this.instructionsText.y + this.instructionsText.height / 2 - 60, 'pair'+spriteID+'_2');
+        this.inhibitSprite.width = 100;
+        this.inhibitSprite.height = 100;
 
         // Create play button sprite object
         this.playButtonSprite = game.add.sprite(game.world.centerX, this.instructionsText.y + this.instructionsText.height, 'playButton');
@@ -87,12 +69,6 @@ INHIB.Instructions.prototype = {
         game.add.existing(this.instructionsText);
         game.add.existing(this.targetSprite);
         game.add.existing(this.inhibitSprite);
-        /*
-        game.add.existing(this.owlSprite);
-        game.add.existing(this.catSprite);
-        game.add.existing(this.ghostSprite);
-        game.add.existing(this.bearSprite);
-        */
         game.add.existing(this.playButtonSprite);
         this.playButtonSprite.inputEnabled = true;
         this.playButtonSprite.events.onInputDown.add(listener, this);

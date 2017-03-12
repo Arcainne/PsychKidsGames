@@ -73,10 +73,10 @@ INHIB.Reactions.prototype = {
 };
 
 function updateReactionData(data) {
-    Reactions.prototype.reactionTimes.push(data);
-    Reactions.prototype.text = Reactions.prototype.reactionTimes.join(', ');
+    INHIB.Reactions.prototype.reactionTimes.push(data);
+    INHIB.Reactions.prototype.text = INHIB.Reactions.prototype.reactionTimes.join(', ');
 }
 function resetReactionData() {
-    Reactions.prototype.reactionTimes = [];
-    Reactions.prototype.text = Reactions.prototype.reactionTimes.join(', ');
+    INHIB.Reactions.prototype.reactionTimes = [];
+    INHIB.Reactions.prototype.text = INHIB.Reactions.prototype.reactionTimes.join(', ');
 }

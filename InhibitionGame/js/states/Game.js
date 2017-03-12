@@ -29,32 +29,20 @@ INHIB.Game.prototype = {
     reactionButton: {},
     accuracyButton: {},
     resetButton: {},
-    
     init: function () {
-        // Create score text.
-        var sprites = ['cat', 'owl', 'ghost', 'bear'];
-        var goodSprites = ['cat', 'owl'];
-        var badSprites = ['ghost', 'bear'];
+        // Create score text
+        var goodSprites = [];
+        var badSprites = [];
+        for (var i = 0; i < INHIB.spritePairCount; i++) {
+            goodSprites.push('pair' + i + '_1');
+            badSprites.push('pair' + i + '_2');
+        }
 
         this.scoreText = game.make.text(10, 5, "Score: " + this.score, {
             font: 'bold 24pt Arial',
             fill: '#0000000'
         });
         this.scoreText.setShadow(2, 2, 'rgba(0,0,0,0.5)', 5);
-
-        // Create instructions text
-        this.instructionsText = game.make.text(
-                250,
-                5,
-                "When the CAT appears, tap it for a point. Try to avoid tapping the GHOST.",
-                {
-                    font: 'bold 20pt Arial',
-                    fill: 'black',
-                    align: 'left',
-                    wordWrap: true,
-                    wordWrapWidth: game.world.width
-                }
-        );
 
         this.dataText = game.make.text(
                 10,
@@ -69,15 +57,27 @@ INHIB.Game.prototype = {
         // Create empty sprite to hold reference to target sprite on screen
         this.targetSprite = game.make.sprite();
 
-        // Create cat sprite object
-        this.catSprite = game.make.sprite(Math.random() * (game.world.width),
+        // Create image objects
+        this.goodSprite = game.make.sprite(Math.random() * (game.world.width),
                 Math.random() * (game.world.height), goodSprites[this.spriteIndex]);
-        this.catSprite.scale.set(0.5, 0.5);
-
-        // Create ghost sprite object
-        this.ghostSprite = game.make.sprite(Math.random() * (game.world.width),
+        this.goodSprite.width = 100;
+        this.goodSprite.height = 100;
+        this.badSprite = game.make.sprite(Math.random() * (game.world.width),
                 Math.random() * (game.world.height), badSprites[this.spriteIndex]);
-        this.ghostSprite.scale.set(0.5, 0.5);
+        this.badSprite.width = 100;
+        this.badSprite.height = 100;
+
+        /*
+         // Create cat sprite object
+         this.catSprite = game.make.sprite(Math.random() * (game.world.width),
+         Math.random() * (game.world.height), goodSprites[this.spriteIndex]);
+         this.catSprite.scale.set(0.5, 0.5);
+         
+         // Create ghost sprite object
+         this.ghostSprite = game.make.sprite(Math.random() * (game.world.width),
+         Math.random() * (game.world.height), badSprites[this.spriteIndex]);
+         this.ghostSprite.scale.set(0.5, 0.5);
+         */
 
         this.changeButton = game.make.sprite(10, 250, 'playButton');
         this.changeButton.scale.set(0.3, 0.3);
@@ -86,7 +86,7 @@ INHIB.Game.prototype = {
         this.timer = game.time.create(false);
 
         // Center sprite anchors
-        utilities.centerGameObjects([this.catSprite, this.ghostSprite]);
+        INHIB.Utils.centerGameObjects([this.goodSprite, this.badSprite]);
     },
     create: function () {
         // Make background color light blue
@@ -95,18 +95,18 @@ INHIB.Game.prototype = {
         // Add all sprites/display objects to the game to be drawn
         game.add.existing(this.scoreText);
         game.add.existing(this.dataText);
-        game.add.existing(this.catSprite);
-        game.add.existing(this.ghostSprite);
+        game.add.existing(this.goodSprite);
+        game.add.existing(this.badSprite);
 
-        this.catSprite.visible = false;
-        this.ghostSprite.visible = false;
-        this.catSprite.inputEnabled = true;
-        this.ghostSprite.inputEnabled = true;
+        this.goodSprite.visible = false;
+        this.badSprite.visible = false;
+        this.goodSprite.inputEnabled = true;
+        this.badSprite.inputEnabled = true;
         this.dataText.visible = false;
 
         // Input listeners for sprites (only need to be added once if listener functions is constant)
-        this.catSprite.events.onInputDown.add(this.correctClick, this);
-        this.ghostSprite.events.onInputDown.add(this.decreaseScore, this);
+        this.goodSprite.events.onInputDown.add(this.correctClick, this);
+        this.badSprite.events.onInputDown.add(this.decreaseScore, this);
 
         // DOM ELEMENTS ACCESS
         // Var to allow proper function calls
@@ -157,8 +157,8 @@ INHIB.Game.prototype = {
         // Test code to move sprites randomly
         var catOrGhost = Math.random() * 10;
         var newPosX, newPosY, resetTime;
-        this.ghostSprite.visible = false;
-        this.catSprite.visible = false;
+        this.goodSprite.visible = false;
+        this.badSprite.visible = false;
 
         // Reset timer
         this.timer.stop();
@@ -166,16 +166,16 @@ INHIB.Game.prototype = {
 
         if (catOrGhost > 8) {
             // Constrain sprite position within screen
-            newPosX = utilities.randRange(this.ghostSprite.width / 2, game.world.width - this.ghostSprite.width / 2);
-            newPosY = utilities.randRange(this.ghostSprite.height / 2, game.world.height - this.ghostSprite.height);
+            newPosX = INHIB.Utils.randRange(this.badSprite.width / 2, game.world.width - this.badSprite.width / 2);
+            newPosY = INHIB.Utils.randRange(this.badSprite.height / 2, game.world.height - this.badSprite.height);
 
             // Update sprite position
-            this.ghostSprite.position.x = newPosX;
-            this.ghostSprite.position.y = newPosY;
-            this.ghostSprite.visible = true;
+            this.badSprite.position.x = newPosX;
+            this.badSprite.position.y = newPosY;
+            this.badSprite.visible = true;
 
             // Set this sprite as target sprite
-            this.targetSprite = this.ghostSprite;
+            this.targetSprite = this.badSprite;
 
             // Time ghost to disappear
             resetTime = 1500;
@@ -185,16 +185,16 @@ INHIB.Game.prototype = {
 
         } else {
             // Constrain sprite position within screen
-            newPosX = utilities.randRange(this.catSprite.width / 2, game.world.width - this.catSprite.width / 2);
-            newPosY = utilities.randRange(this.catSprite.height / 2, game.world.height - this.catSprite.height);
+            newPosX = INHIB.Utils.randRange(this.goodSprite.width / 2, game.world.width - this.goodSprite.width / 2);
+            newPosY = INHIB.Utils.randRange(this.goodSprite.height / 2, game.world.height - this.goodSprite.height);
 
             // Update sprite position
-            this.catSprite.position.x = newPosX;
-            this.catSprite.position.y = newPosY;
-            this.catSprite.visible = true;
+            this.goodSprite.position.x = newPosX;
+            this.goodSprite.position.y = newPosY;
+            this.goodSprite.visible = true;
 
             // Set this sprite as target sprite
-            this.targetSprite = this.catSprite;
+            this.targetSprite = this.goodSprite;
         }
     },
     // Main update function that is called repeatedly
@@ -219,8 +219,8 @@ INHIB.Game.prototype = {
     },
     correctClick: function () {
         this.finalTime = this.timer.ms;
-        this.accuracy = Math.floor(utilities.dist(game.input.activePointer.position.x, game.input.activePointer.position.y,
-                        this.targetSprite.position.x, this.targetSprite.position.y));
+        this.accuracy = Math.floor(INHIB.Utils.dist(game.input.activePointer.position.x, game.input.activePointer.position.y,
+                this.targetSprite.position.x, this.targetSprite.position.y));
         updateReactionData(this.finalTime);
         updateAccuracyData(this.accuracy);
         this.increaseScore();
@@ -244,12 +244,12 @@ INHIB.Game.prototype = {
 
         this.ghostSprite.loadTexture(badSpriteArray[index], 0);
         this.catSprite.loadTexture(goodSpriteArray[index], 0);
-        
+
         // Resize sprites accordingly
         if (index === 1) {
             this.catSprite.scale.set(0.4, 0.4);
             this.ghostSprite.scale.set(0.45, 0.45);
-        } else if (index ===0 ) {
+        } else if (index === 0) {
             this.catSprite.scale.set(0.5, 0.5);
             this.ghostSprite.scale.set(0.5, 0.5);
         }
