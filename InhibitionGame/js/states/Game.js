@@ -12,14 +12,15 @@
  */
 
 // Create global empty Game state object
-INHIB.Game = function () {};
+INHIB.Game = function () {
+    this.spriteIndex = 0;
+};
 
 // Define global Game state object
 INHIB.Game.prototype = {
     score: 0,
     timer: 0,
     accuracy: 0,
-    spriteIndex: 0,
     targetSpriteIndex: 0,
     inhibSpriteIndex: 0,
     goodSprites: [],
@@ -27,7 +28,6 @@ INHIB.Game.prototype = {
     toolbar: {},
     dataButton: {},
     spriteButtons: [],
-    //countButtons: [],
     reactionButton: {},
     accuracyButton: {},
     resetButton: {},
@@ -104,8 +104,6 @@ INHIB.Game.prototype = {
         this.toolbar = $("#toolbar");
         this.toolbar.show();
         this.dataButton = $("#data");
-//        this.spriteButtons.push($("#sprites1"));
-//        this.spriteButtons.push($("#sprites2"));
         this.spritesButton = $("#spritesButton");
         this.reactionButton = $("#reactionlog");
         this.reactionButton.html("Reaction Times");
@@ -115,19 +113,11 @@ INHIB.Game.prototype = {
 
         // Functions to handle DOM element inputs
         this.dataButton.on('click', function () {
-            //that.showStats = that.showStats ? false : true;
             that.dataText.visible = that.dataText.visible ? false : true;
-            //game.debug.pointer(game.input.activePointer);
         });
         
-//        this.spriteButtons[0].on('click', function () {
-//            that.spriteChange(0);
-//        });
-//        this.spriteButtons[1].on('click', function () {
-//            that.spriteChange(1);
-//        });
         this.spritesButton.on('click', function () {
-            that.createSpritesDOM();
+            that.selectSpritesDOM();
         });
         this.reactionButton.on('click', function () {
             game.state.start('Reactions');
@@ -145,26 +135,13 @@ INHIB.Game.prototype = {
         // Call function to start the sprite updates
         this.spriteUpdate();
     },
-    createSpritesDOM: function () {
-        var dropDownDiv = $("<div></div>");
-        dropDownDiv.attr("class", "w3-dropdown-content w3-card-4 w3-bar w3-border w3-round");
-        dropDownDiv.attr("id", "sprites");
-        
-        for (var i = 0; i < INHIB.spritePairCount; i++) {
-            var itemDOM = $("<a></a>");
-            itemDOM.attr("class", "w3-button");
-            //itemDOM.attr("id", i);
-            itemDOM.text(i);
-            
-            var that = this;
-            itemDOM.on("click", function () {
-                that.spriteChange(this.text);
-            });
-            
-            dropDownDiv.append(itemDOM);
-        }
-        $("#spritesButton").append(dropDownDiv);
-        $("#sprites").toggle();
+    selectSpritesDOM: function () {
+        var that = this;
+        $("#sprites").children("a").on("click", function () {
+            that.spriteIndex = this.id;
+            that.spriteChange(this.id);
+            $("#sprites").hide();
+        });
     },
     // Function to update the sprite based on time/score
     spriteUpdate: function () {
@@ -253,22 +230,6 @@ INHIB.Game.prototype = {
         this.spriteUpdate();
     },
     spriteChange: function (index) {
-        /*
-        var goodSpriteArray = ['cat', 'owl'];
-        var badSpriteArray = ['ghost', 'bear'];
-
-        this.ghostSprite.loadTexture(badSpriteArray[index], 0);
-        this.catSprite.loadTexture(goodSpriteArray[index], 0);
-
-        // Resize sprites accordingly
-        if (index === 1) {
-            this.catSprite.scale.set(0.4, 0.4);
-            this.ghostSprite.scale.set(0.45, 0.45);
-        } else if (index === 0) {
-            this.catSprite.scale.set(0.5, 0.5);
-            this.ghostSprite.scale.set(0.5, 0.5);
-        }
-        */
         this.goodSprite.loadTexture(this.goodSprites[index], 0);
         this.badSprite.loadTexture(this.badSprites[index], 0);
         this.goodSprite.width = this.goodSprite.height = this.badSprite.width = this.badSprite.height = 100;
