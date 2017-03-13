@@ -20,7 +20,7 @@ INHIB.Game = function () {
 INHIB.Game.prototype = {
     score: 0,
     timer: 0,
-    inhibitTime: 1500, //<--- Edit to change inhibition sprite display time (in milliseconds)
+    inhibitTime: 2000, //<--- Edit to change inhibition sprite display time (in milliseconds)
     accuracy: 0,
     targetSpriteIndex: 0,
     inhibSpriteIndex: 0,
