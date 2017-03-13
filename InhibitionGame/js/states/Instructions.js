@@ -26,7 +26,7 @@ INHIB.Instructions.prototype = {
         this.instructionsText = game.make.text(
                 game.world.centerX,
                 this.instructionsSprite.y + this.instructionsSprite.height / 1.5,
-                "When the CAT/OWL appears, tap it for a point. Try to avoid tapping the DOG/BEAR.",
+                "When the target animal appears, tap it for a point. Try to avoid tapping the other animal.",
                 {
                     font: 'bold 20pt Arial',
                     fill: 'black',
@@ -41,12 +41,12 @@ INHIB.Instructions.prototype = {
         var spriteID = Math.round(INHIB.Utils.randRange(0, 8));
         
         // Create target sprite
-        this.targetSprite = game.make.sprite(game.world.width / 4, this.instructionsText.y + this.instructionsText.height / 2 - 70, 'pair'+spriteID+'_1');
+        this.targetSprite = game.make.sprite(game.world.width / 4 - 50, this.instructionsText.y + this.instructionsText.height / 2 - 70, 'pair'+spriteID+'_1');
         this.targetSprite.width = 100;
         this.targetSprite.height = 100;
         
         // Create inhibit sprite object
-        this.inhibitSprite = game.make.sprite(game.world.width - game.world.width / 4 - 100, this.instructionsText.y + this.instructionsText.height / 2 - 60, 'pair'+spriteID+'_2');
+        this.inhibitSprite = game.make.sprite(game.world.width - game.world.width / 4 - 50, this.instructionsText.y + this.instructionsText.height / 2 - 60, 'pair'+spriteID+'_2');
         this.inhibitSprite.width = 100;
         this.inhibitSprite.height = 100;
 

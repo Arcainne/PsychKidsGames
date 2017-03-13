@@ -22,6 +22,8 @@ INHIB.Game.prototype = {
     spriteIndex: 0,
     targetSpriteIndex: 0,
     inhibSpriteIndex: 0,
+    goodSprites: [],
+    badSprites: [],
     toolbar: {},
     dataButton: {},
     spriteButtons: [],
@@ -30,12 +32,10 @@ INHIB.Game.prototype = {
     accuracyButton: {},
     resetButton: {},
     init: function () {
-        // Create score text
-        var goodSprites = [];
-        var badSprites = [];
+        // Create sprite arrays
         for (var i = 0; i < INHIB.spritePairCount; i++) {
-            goodSprites.push('pair' + i + '_1');
-            badSprites.push('pair' + i + '_2');
+            this.goodSprites.push('pair' + i + '_1');
+            this.badSprites.push('pair' + i + '_2');
         }
 
         this.scoreText = game.make.text(10, 5, "Score: " + this.score, {
@@ -59,25 +59,13 @@ INHIB.Game.prototype = {
 
         // Create image objects
         this.goodSprite = game.make.sprite(Math.random() * (game.world.width),
-                Math.random() * (game.world.height), goodSprites[this.spriteIndex]);
+                Math.random() * (game.world.height), this.goodSprites[this.spriteIndex]);
         this.goodSprite.width = 100;
         this.goodSprite.height = 100;
         this.badSprite = game.make.sprite(Math.random() * (game.world.width),
-                Math.random() * (game.world.height), badSprites[this.spriteIndex]);
+                Math.random() * (game.world.height), this.badSprites[this.spriteIndex]);
         this.badSprite.width = 100;
         this.badSprite.height = 100;
-
-        /*
-         // Create cat sprite object
-         this.catSprite = game.make.sprite(Math.random() * (game.world.width),
-         Math.random() * (game.world.height), goodSprites[this.spriteIndex]);
-         this.catSprite.scale.set(0.5, 0.5);
-         
-         // Create ghost sprite object
-         this.ghostSprite = game.make.sprite(Math.random() * (game.world.width),
-         Math.random() * (game.world.height), badSprites[this.spriteIndex]);
-         this.ghostSprite.scale.set(0.5, 0.5);
-         */
 
         this.changeButton = game.make.sprite(10, 250, 'playButton');
         this.changeButton.scale.set(0.3, 0.3);
@@ -116,8 +104,9 @@ INHIB.Game.prototype = {
         this.toolbar = $("#toolbar");
         this.toolbar.show();
         this.dataButton = $("#data");
-        this.spriteButtons.push($("#sprites1"));
-        this.spriteButtons.push($("#sprites2"));
+//        this.spriteButtons.push($("#sprites1"));
+//        this.spriteButtons.push($("#sprites2"));
+        this.spritesButton = $("#spritesButton");
         this.reactionButton = $("#reactionlog");
         this.reactionButton.html("Reaction Times");
         this.accuracyButton = $("#accuracylog");
@@ -130,11 +119,15 @@ INHIB.Game.prototype = {
             that.dataText.visible = that.dataText.visible ? false : true;
             //game.debug.pointer(game.input.activePointer);
         });
-        this.spriteButtons[0].on('click', function () {
-            that.spriteChange(0);
-        });
-        this.spriteButtons[1].on('click', function () {
-            that.spriteChange(1);
+        
+//        this.spriteButtons[0].on('click', function () {
+//            that.spriteChange(0);
+//        });
+//        this.spriteButtons[1].on('click', function () {
+//            that.spriteChange(1);
+//        });
+        this.spritesButton.on('click', function () {
+            that.createSpritesDOM();
         });
         this.reactionButton.on('click', function () {
             game.state.start('Reactions');
@@ -152,10 +145,31 @@ INHIB.Game.prototype = {
         // Call function to start the sprite updates
         this.spriteUpdate();
     },
+    createSpritesDOM: function () {
+        var dropDownDiv = $("<div></div>");
+        dropDownDiv.attr("class", "w3-dropdown-content w3-card-4 w3-bar w3-border w3-round");
+        dropDownDiv.attr("id", "sprites");
+        
+        for (var i = 0; i < INHIB.spritePairCount; i++) {
+            var itemDOM = $("<a></a>");
+            itemDOM.attr("class", "w3-button");
+            //itemDOM.attr("id", i);
+            itemDOM.text(i);
+            
+            var that = this;
+            itemDOM.on("click", function () {
+                that.spriteChange(this.text);
+            });
+            
+            dropDownDiv.append(itemDOM);
+        }
+        $("#spritesButton").append(dropDownDiv);
+        $("#sprites").toggle();
+    },
     // Function to update the sprite based on time/score
     spriteUpdate: function () {
         // Test code to move sprites randomly
-        var catOrGhost = Math.random() * 10;
+        var targetOrInhib = Math.random() * 10;
         var newPosX, newPosY, resetTime;
         this.goodSprite.visible = false;
         this.badSprite.visible = false;
@@ -164,7 +178,7 @@ INHIB.Game.prototype = {
         this.timer.stop();
         this.timer.start();
 
-        if (catOrGhost > 8) {
+        if (targetOrInhib > 8) {
             // Constrain sprite position within screen
             newPosX = INHIB.Utils.randRange(this.badSprite.width / 2, game.world.width - this.badSprite.width / 2);
             newPosY = INHIB.Utils.randRange(this.badSprite.height / 2, game.world.height - this.badSprite.height);
@@ -239,6 +253,7 @@ INHIB.Game.prototype = {
         this.spriteUpdate();
     },
     spriteChange: function (index) {
+        /*
         var goodSpriteArray = ['cat', 'owl'];
         var badSpriteArray = ['ghost', 'bear'];
 
@@ -253,6 +268,11 @@ INHIB.Game.prototype = {
             this.catSprite.scale.set(0.5, 0.5);
             this.ghostSprite.scale.set(0.5, 0.5);
         }
+        */
+        this.goodSprite.loadTexture(this.goodSprites[index], 0);
+        this.badSprite.loadTexture(this.badSprites[index], 0);
+        this.goodSprite.width = this.goodSprite.height = this.badSprite.width = this.badSprite.height = 100;
+       
         this.timer.stop();
         this.spriteUpdate();
     }
