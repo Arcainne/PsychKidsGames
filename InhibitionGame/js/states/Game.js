@@ -20,6 +20,7 @@ INHIB.Game = function () {
 INHIB.Game.prototype = {
     score: 0,
     timer: 0,
+    inhibitTime: 1500, //<--- Edit to change inhibition sprite display time (in milliseconds)
     accuracy: 0,
     targetSpriteIndex: 0,
     inhibSpriteIndex: 0,
@@ -147,7 +148,7 @@ INHIB.Game.prototype = {
     spriteUpdate: function () {
         // Test code to move sprites randomly
         var targetOrInhib = Math.random() * 10;
-        var newPosX, newPosY, resetTime;
+        var newPosX, newPosY;
         this.goodSprite.visible = false;
         this.badSprite.visible = false;
 
@@ -169,9 +170,8 @@ INHIB.Game.prototype = {
             this.targetSprite = this.badSprite;
 
             // Time ghost to disappear
-            resetTime = 1500;
             this.timer.clearPendingEvents();
-            this.timer.add(resetTime, this.increaseScore, this);
+            this.timer.add(this.inhibitTime, this.increaseScore, this);
             //game.time.events.add(resetTime, this.increaseScore, this);
 
         } else {
