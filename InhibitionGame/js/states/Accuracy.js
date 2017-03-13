@@ -11,6 +11,7 @@ INHIB.Accuracy.prototype = {
     accuracyButton: {},
     accuracyLog: [],
     text: "",
+    exportText: "",
     avg: 0,
     
     // Initialization function called before 'create'
@@ -75,8 +76,10 @@ INHIB.Accuracy.prototype = {
 function updateAccuracyData(data) {
     INHIB.Accuracy.prototype.accuracyLog.push(data);
     INHIB.Accuracy.prototype.text = INHIB.Accuracy.prototype.accuracyLog.join(', ');
+    INHIB.Accuracy.prototype.exportText = INHIB.Accuracy.prototype.accuracyLog.join('\r\n');
 }
 function resetAccuracyData() {
     INHIB.Accuracy.prototype.accuracyLog = [];
     INHIB.Accuracy.prototype.text = INHIB.Accuracy.prototype.accuracyLog.join(', ');
+    INHIB.Accuracy.prototype.exportText = INHIB.Accuracy.prototype.accuracyLog.join('\r\n');
 }

@@ -236,5 +236,8 @@ INHIB.Game.prototype = {
        
         this.timer.stop();
         this.spriteUpdate();
+    },
+    shutdown: function () {
+        this.timer.stop();
     }
 };

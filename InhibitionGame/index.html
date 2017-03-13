@@ -32,6 +32,7 @@
             <li><a id="reactionlog" onclick="hideSpriteSelect()">Reaction Times</a></li>
             <li><a id="accuracylog" onclick="hideSpriteSelect()">Accuracy Log</a></li>
             <li><a id="reset" onclick="hideSpriteSelect()">Reset</a></li>
+            <li><a id="export" onclick="hideSpriteSelect()">Export Data</a></li>
         </ul>
         <script>
             function toggleSpriteSelect() {
@@ -61,6 +62,24 @@
             }
 
             $("#spritesButton").append(dropDownDiv);
+
+            $("#export").on("click", function () {
+                var data = "Reactions,Accuracy\r\n";
+                var array = [];
+                var row = "";
+                for (var i = 0; i < INHIB.Reactions.prototype.reactionTimes.length; i++) {
+                    row += INHIB.Reactions.prototype.reactionTimes[i] + "," 
+                            + INHIB.Accuracy.prototype.accuracyLog[i];
+                    array.push(row);
+                    row = "";
+                }
+                row = array.join("\r\n");
+                data += row;
+                data = "data:text/csv;charset=utf-8," + data;
+                data = encodeURI(data);
+                $("#export").attr("href", data);
+                $("#export").attr("download", 'data.csv');
+            });
         </script>
     </body>
 </html>

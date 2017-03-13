@@ -11,6 +11,7 @@ INHIB.Reactions.prototype = {
     reactionButton: {},
     reactionTimes: [],
     text: "",
+    exportText: "",
     avg: 0,
     
     // Initialization function called before 'create'
@@ -75,8 +76,10 @@ INHIB.Reactions.prototype = {
 function updateReactionData(data) {
     INHIB.Reactions.prototype.reactionTimes.push(data);
     INHIB.Reactions.prototype.text = INHIB.Reactions.prototype.reactionTimes.join(', ');
+    INHIB.Reactions.prototype.exportText = INHIB.Reactions.prototype.reactionTimes.join('\r\n');
 }
 function resetReactionData() {
     INHIB.Reactions.prototype.reactionTimes = [];
     INHIB.Reactions.prototype.text = INHIB.Reactions.prototype.reactionTimes.join(', ');
+    INHIB.Reactions.prototype.exportText = INHIB.Reactions.prototype.reactionTimes.join('\r\n');
 }
